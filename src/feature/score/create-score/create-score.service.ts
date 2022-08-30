@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from 'src/entity/person.entity';
 import { Score } from 'src/entity/score.entity';
@@ -6,9 +6,15 @@ import { ScoreStatus } from 'src/enum/scoreStatus.enum';
 import { Repository } from 'typeorm';
 import { CreateScoreInput } from './data/create-score.input';
 import { CreateScoreOutput } from './data/create-score.output';
+import { Cron } from '@nestjs/schedule';
 
 @Injectable()
 export class CreateScoreService {
+
+    private readonly logger = new Logger(CreateScoreService.name);
+
+    userIdTab = [];
+    scoreIdTab = [];
 
     constructor(
         @InjectRepository(User) private readonly userRepository: Repository<User>,
@@ -23,7 +29,6 @@ export class CreateScoreService {
                 },
             });
             const now = new Date();
-            console.log(now.getDate());
 
             if (user) {
 
@@ -38,8 +43,6 @@ export class CreateScoreService {
                         user: true,
                     }
                 })
-
-                console.log(user);
                 
                 // Condition about latitude
                 const conditionOne: boolean = 4.88 > createScoreInput.latitude;
@@ -62,7 +65,7 @@ export class CreateScoreService {
                         createScoreInput.createdAtTime = `${now.getHours()}:${now.getMinutes()}:${now.getSeconds()}`;
                         createScoreInput.updatedAtTime = `${now.getHours()}:${now.getMinutes()}:${now.getSeconds()}`;
 
-                        if (now.getHours() > 9) {
+                        if (now.getHours() >= 9) {
                             createScoreInput.status = ScoreStatus.LATE;
                         } else {
                             createScoreInput.status = ScoreStatus.ONTIME;
@@ -108,6 +111,65 @@ export class CreateScoreService {
                     statusCode: 500,
                     score: null,
                 }
+        }
+    }
+
+    @Cron('0 0 17 * * 1-5')
+    async handleCron() {
+        try {
+            const now = new Date();
+
+            const userId = await this.userRepository.find({
+                select: {
+                    id: true,
+                }
+            })
+
+            const score = await this.scoreRepository.find({
+                where: {
+                    createdAtDate: `${now.getFullYear()}-${now.getMonth() + 1}-${now.getDate()}`
+                },
+                relations: {
+                    user: true,
+                },
+            });
+
+            let a = 0;
+            while (a < score.length) {
+                this.scoreIdTab.push(score[0]?.user?.id);
+                a++;
+            }
+
+            let i = 0;
+            while (i < userId.length) {
+                this.userIdTab.push(userId[i].id);
+                i++;
+            }
+
+            let j = 0;
+            while (j < this.userIdTab.length) {
+                if(this.scoreIdTab.includes(this.userIdTab[j])) {
+
+                    // Check status of user
+
+                } else {
+
+                    const createScoreInput = {
+                        user: await this.userRepository.findOneBy({id: this.userIdTab[j]}),
+                        status: ScoreStatus.ABSENT,
+                    };
+
+                    await this.scoreRepository.save(createScoreInput);
+
+                    console.log(this.userIdTab[j]);
+
+                }
+
+                j++;
+            }
+
+        } catch (error) {
+            console.log(error);
         }
     }
 }

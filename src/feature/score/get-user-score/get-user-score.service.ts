@@ -2,27 +2,25 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from 'src/entity/person.entity';
 import { Score } from 'src/entity/score.entity';
-import { Role } from 'src/enum/role.enum';
 import { ScoreStatus } from 'src/enum/scoreStatus.enum';
-import { Repository } from 'typeorm';
-import { GetAllScoreOutput } from './data/get-all-score.output';
+import { Not, Repository } from 'typeorm';
+import { GetUserScoreOutput } from './data/get-user-score.output';
 
 @Injectable()
-export class GetAllScoreService {
+export class GetUserScoreService {
 
     constructor(
         @InjectRepository(User) private readonly userRepository: Repository<User>,
         @InjectRepository(Score) private readonly scoreRepository: Repository<Score>,
     ) { }
 
-    async find(): Promise<GetAllScoreOutput> {
+    async find(userId: string): Promise<GetUserScoreOutput> {
         try {
-            const user = await this.userRepository.find({
+            const user = await this.userRepository.findOne({
                 where: {
-                    // Check if the current user is an administrator
-                    // role: Role.ADMIN,
+                    id: userId,
                     scores: {
-                        status: ScoreStatus.LATE,
+                        status: Not(ScoreStatus.ONTIME),
                     }
                 },
                 relations: {
@@ -30,16 +28,24 @@ export class GetAllScoreService {
                 }
             })
 
-            return {
-                message: "Data successfully retrieved",
-                statusCode: 200,
-                data: user,
-            };
+            if (user) {
+                return {
+                    message: "Score successfully retrieved",
+                    statusCode: 200,
+                    user: user
+                }
+            } else {
+                return {
+                    message: "User not found",
+                    statusCode: 400,
+                    user: null
+                }
+            }
         } catch (error) {
             return {
                 message: "An error occurred",
                 statusCode: 500,
-                data: null,
+                user: null
             }
         }
     }

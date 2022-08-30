@@ -3,6 +3,7 @@ import { Service } from "src/enum/service.enum";
 import { Column, Entity, Generated, OneToMany } from "typeorm";
 import { Base } from "./base.entity";
 import { PayStub } from "./payStub.entity";
+import { Proof } from "./proof.entity";
 import { Score } from "./score.entity";
 
 @Entity('person')
@@ -63,5 +64,8 @@ export class User extends Base {
 
     @OneToMany(() => PayStub, (PayStub) => PayStub.user)
     payStubs: PayStub[];
+
+    @OneToMany(() => Proof, (proof) => proof.treatBy)
+    proofs!: Proof[];
 
 }

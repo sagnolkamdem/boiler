@@ -1,5 +1,5 @@
 import { Controller, Get } from '@nestjs/common';
-import { GetAllScoreOutput } from './data/get-all-score.input';
+import { GetAllScoreOutput } from './data/get-all-score.output';
 import { GetAllScoreService } from './get-all-score.service';
 
 @Controller('score')

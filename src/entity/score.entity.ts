@@ -11,21 +11,25 @@ export class Score extends BaseEntity {
 
     @Column({
         type: 'date',
+        nullable: true,
     })
     createdAtDate: string;
 
     @Column({
         type: 'time',
+        nullable: true,
     })
     createdAtTime: string;
 
     @Column({
         type: 'date',
+        nullable: true,
     })
     updatedAtDate: string;
 
     @Column({
         type: 'time',
+        nullable: true,
     })
     updatedAtTime: string;
 

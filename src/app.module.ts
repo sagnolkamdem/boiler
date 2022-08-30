@@ -5,6 +5,9 @@ import { AppService } from './app.service';
 import { AuthModule } from './feature/auth/auth.module';
 import { UserModule } from './feature/user/user.module';
 import { ScoreModule } from './feature/score/score.module';
+import { ScheduleModule } from '@nestjs/schedule';
+import { ProofModule } from './feature/proof/proof.module';
+import { MulterModule } from '@nestjs/platform-express';
 
 @Module({
   imports: [
@@ -21,6 +24,11 @@ import { ScoreModule } from './feature/score/score.module';
     AuthModule,
     UserModule,
     ScoreModule,
+    ScheduleModule.forRoot(),
+    MulterModule.register({
+      dest: './uploads'
+    }),
+    ProofModule,
   ],
   controllers: [AppController],
   providers: [AppService],
