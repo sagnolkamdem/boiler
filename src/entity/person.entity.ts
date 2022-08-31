@@ -12,6 +12,16 @@ export class User extends Base {
     @Column()
     name: string;
 
+    @Column({
+        default: 'username',
+    })
+    username: string;
+
+    @Column({
+        default: 'password',
+    })
+    password: string;
+
     @Column()
     token: string;
 

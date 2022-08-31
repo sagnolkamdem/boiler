@@ -6,9 +6,6 @@ import { User } from "./person.entity";
 @Entity()
 export class PayStub extends Base {
 
-    @Column()
-    job: String;
-
     @Column({
         type: "enum",
         enum: Period
@@ -16,7 +13,7 @@ export class PayStub extends Base {
     periodMonth: Period
 
     @Column()
-    periodYear: string;
+    periodYear: number;
 
     @ManyToOne(() => User, (user) => user.payStubs)
     user: User;

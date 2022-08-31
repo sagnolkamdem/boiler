@@ -9,6 +9,9 @@ export class Score extends BaseEntity {
     @PrimaryGeneratedColumn('uuid')
     id: string;
 
+    @CreateDateColumn()
+    createdAtOfServer: Date;
+
     @Column({
         type: 'date',
         nullable: true,

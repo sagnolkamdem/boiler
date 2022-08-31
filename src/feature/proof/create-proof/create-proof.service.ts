@@ -12,20 +12,30 @@ export class CreateProofService {
 
     constructor(
         @InjectRepository(User) private readonly userRepository: Repository<User>,
-        @InjectRepository(Score) private readonly ScoreRepository: Repository<Score>,
-        @InjectRepository(Proof) private readonly ProofRepository: Repository<Proof>,
+        @InjectRepository(Score) private readonly scoreRepository: Repository<Score>,
+        @InjectRepository(Proof) private readonly proofRepository: Repository<Proof>,
     ) { }
 
-    async create(createProofInput: CreateProofInput, file: Express.Multer.File) {
-
-        // : Promise<CreateProofOutput>
+    async create(createProofInput: CreateProofInput, file: Express.Multer.File): Promise<CreateProofOutput> {
 
         try {
-            console.log(createProofInput.file);
+            createProofInput.file = file.path;
+
+            console.log()
             
-            // const proof = await this.userRepository.save(createProofInput);
+            await this.proofRepository.save(createProofInput);
+
+            return {
+                message: "Proof successfully created",
+                statusCode: 201,
+            }
         } catch (error) {
+            console.log(error);
             
+            return {
+                message: "An error occurred",
+                statusCode: 500,
+            }
         }
     }
 }

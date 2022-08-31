@@ -11,6 +11,6 @@ export class CreateProofInput {
     @IsOptional()
     file: string;
 
-    @IsNotEmpty()
-    scores: Score[];
+    // @IsNotEmpty()
+    // scores: Score[];
 }

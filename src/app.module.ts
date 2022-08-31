@@ -8,9 +8,14 @@ import { ScoreModule } from './feature/score/score.module';
 import { ScheduleModule } from '@nestjs/schedule';
 import { ProofModule } from './feature/proof/proof.module';
 import { MulterModule } from '@nestjs/platform-express';
+import { ConfigModule } from '@nestjs/config';
+import { PayStubModule } from './feature/pay-stub/pay-stub.module';
 
 @Module({
   imports: [
+    ConfigModule.forRoot({
+      isGlobal: true,
+    }),
     TypeOrmModule.forRoot({
       type: 'postgres',
       host: 'localhost',
@@ -29,6 +34,7 @@ import { MulterModule } from '@nestjs/platform-express';
       dest: './uploads'
     }),
     ProofModule,
+    PayStubModule,
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -43,19 +43,20 @@ export class LoginUserService {
         }
     }
 
-    async validateUser(token: string): Promise<any> {
-        console.log("validateUser");
+    async validateUser(username: string, password: string): Promise<any> {
         
         try {
             const user = await this.userRepository.findOne({
                 where: {
-                    token: token,
+                    username: username,
+                    password: password
+                    // token: token,
                 },
             })
             if (!user) {
-                return false;
+                return null;
             } else {
-                return true;
+                return user;
             }
         } catch (err) {
             // catch the error

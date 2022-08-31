@@ -5,12 +5,16 @@ import { Proof } from 'src/entity/proof.entity';
 import { Score } from 'src/entity/score.entity';
 import { CreateProofController } from './create-proof/create-proof.controller';
 import { CreateProofService } from './create-proof/create-proof.service';
+import { ConfigModule } from '@nestjs/config';
+import { GetAllProofController } from './get-all-proof/get-all-proof.controller';
+import { GetAllProofService } from './get-all-proof/get-all-proof.service';
 
 @Module({
   imports: [
+    ConfigModule,
     TypeOrmModule.forFeature([User, Score, Proof])
   ],
-  controllers: [CreateProofController],
-  providers: [CreateProofService]
+  controllers: [CreateProofController, GetAllProofController],
+  providers: [CreateProofService, GetAllProofService]
 })
 export class ProofModule {}

@@ -3,6 +3,7 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { CreateProofService } from './create-proof.service';
 import { CreateProofInput } from './data/create-proof.input';
 import { CreateProofOutput } from './data/create-proof.output';
+import { ConfigService } from '@nestjs/config';
 
 import { diskStorage } from 'multer';
 import { extname } from 'path';
@@ -10,18 +11,14 @@ import { extname } from 'path';
 @Controller('proof')
 export class CreateProofController {
 
+    filename: string;
+
     constructor(
         private readonly createProofService: CreateProofService,
+        private configService: ConfigService,
     ) { }
-    // : Promise<CreateProofOutput>
 
     @Post()
-    @UseInterceptors(FileInterceptor('file'))
-    create(@UploadedFile() file: Express.Multer.File, @Body() createProofInput: CreateProofInput) {
-        return this.createProofService.create(createProofInput, file);
-    }
-
-    @Post('ff')
     @UseInterceptors(FileInterceptor('file', {
         storage: diskStorage({
             destination: './upload',
@@ -33,8 +30,26 @@ export class CreateProofController {
             }
         })
     }))
-    uploadFile(@UploadedFile() file: Express.Multer.File) {
-        console.log(__dirname);
+    create(@UploadedFile() file: Express.Multer.File, @Body() createProofInput: CreateProofInput): Promise<CreateProofOutput> {
         console.log(file);
+        
+        return this.createProofService.create(createProofInput, file);
     }
+
+    // @Post('ff')
+    // @UseInterceptors(FileInterceptor('file', {
+    //     storage: diskStorage({
+    //         destination: './upload',
+    //         filename: (req, file, callback) => {
+    //             const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9);
+    //             const ext = extname(file.originalname);
+    //             const filename = `${file.originalname}-${uniqueSuffix}${ext}`;
+    //             callback(null, filename);
+    //         }
+    //     })
+    // }))
+    // uploadFile(@UploadedFile() file: Express.Multer.File) {
+    //     console.log(__dirname);
+    //     console.log(file);
+    // }
 }

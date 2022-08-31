@@ -31,7 +31,7 @@ export class Proof extends Base {
     rejectedReason: string;
 
     @OneToMany(() => Score, (Score) => Score.proof)
-    scores: Score[];
+    scores!: Score[];
 
     @ManyToOne(() => User, (user) => user.proofs)
     treatBy!: User;

@@ -3,6 +3,7 @@ import { PassportModule } from '@nestjs/passport';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from 'src/entity/person.entity';
 import { CreateUserService } from '../user/create-user/create-user.service';
+import { LoginUserService } from '../user/login-user/login-user.service';
 import { UserModule } from '../user/user.module';
 import { AuthService } from './auth/auth.service';
 import { LocalStrategy } from './local.strategy';
@@ -13,6 +14,6 @@ import { LocalStrategy } from './local.strategy';
     UserModule,
     PassportModule,
   ],
-  providers: [AuthService, CreateUserService, LocalStrategy]
+  providers: [AuthService, LoginUserService, LocalStrategy]
 })
 export class AuthModule {}
