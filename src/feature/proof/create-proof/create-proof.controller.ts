@@ -31,7 +31,7 @@ export class CreateProofController {
         })
     }))
     create(@UploadedFile() file: Express.Multer.File, @Body() createProofInput: CreateProofInput): Promise<CreateProofOutput> {
-        console.log(file);
+        createProofInput.file = 'as'
         
         return this.createProofService.create(createProofInput, file);
     }

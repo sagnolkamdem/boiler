@@ -8,12 +8,15 @@ import { GetAllScoreController } from './get-all-score/get-all-score.controller'
 import { GetAllScoreService } from './get-all-score/get-all-score.service';
 import { GetUserScoreController } from './get-user-score/get-user-score.controller';
 import { GetUserScoreService } from './get-user-score/get-user-score.service';
+import { AddProofController } from './add-proof/add-proof.controller';
+import { AddProofService } from './add-proof/add-proof.service';
+import { Proof } from 'src/entity/proof.entity';
 
 @Module({
     imports: [
-        TypeOrmModule.forFeature([User, Score])
+        TypeOrmModule.forFeature([User, Score, Proof])
     ],
-    providers: [CreateScoreService, GetAllScoreService, GetUserScoreService],
-    controllers: [CreateScoreController, GetAllScoreController, GetUserScoreController],
+    providers: [CreateScoreService, GetAllScoreService, GetUserScoreService, AddProofService],
+    controllers: [CreateScoreController, GetAllScoreController, GetUserScoreController, AddProofController],
 })
 export class ScoreModule {}

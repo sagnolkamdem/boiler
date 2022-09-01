@@ -22,7 +22,7 @@ export class CreateProofService {
         
 
         try {
-            createProofInput.file = file.path;
+            createProofInput.file ? createProofInput.file = file.path : null;
             
             await this.proofRepository.save(createProofInput);
 
@@ -31,6 +31,8 @@ export class CreateProofService {
                 statusCode: 201,
             }
         } catch (error) {
+            console.log(error);
+            
             return {
                 message: "An error occurred",
                 statusCode: 500,
