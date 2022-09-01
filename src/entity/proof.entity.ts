@@ -33,7 +33,10 @@ export class Proof extends Base {
     @OneToMany(() => Score, (Score) => Score.proof)
     scores!: Score[];
 
-    @ManyToOne(() => User, (user) => user.proofs)
+    @ManyToOne(() => User, (user) => user.proofsTreatedBy)
     treatBy!: User;
+
+    @ManyToOne(() => User, (user) => user.proofsCreatedBy)
+    concerns: User;
 
 }

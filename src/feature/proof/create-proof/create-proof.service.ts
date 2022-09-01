@@ -18,10 +18,11 @@ export class CreateProofService {
 
     async create(createProofInput: CreateProofInput, file: Express.Multer.File): Promise<CreateProofOutput> {
 
+        console.log(createProofInput);
+        
+
         try {
             createProofInput.file = file.path;
-
-            console.log()
             
             await this.proofRepository.save(createProofInput);
 
@@ -30,8 +31,6 @@ export class CreateProofService {
                 statusCode: 201,
             }
         } catch (error) {
-            console.log(error);
-            
             return {
                 message: "An error occurred",
                 statusCode: 500,

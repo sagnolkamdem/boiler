@@ -76,6 +76,9 @@ export class User extends Base {
     payStubs: PayStub[];
 
     @OneToMany(() => Proof, (proof) => proof.treatBy)
-    proofs!: Proof[];
+    proofsTreatedBy!: Proof[];
+
+    @OneToMany(() => Proof, (proof) => proof.concerns)
+    proofsCreatedBy!: Proof[];
 
 }
