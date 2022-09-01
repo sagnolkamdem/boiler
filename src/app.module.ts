@@ -10,21 +10,22 @@ import { ProofModule } from './feature/proof/proof.module';
 import { MulterModule } from '@nestjs/platform-express';
 import { ConfigModule } from '@nestjs/config';
 import { PayStubModule } from './feature/pay-stub/pay-stub.module';
+import { config } from '../config';
+import { DatabaseConfig } from 'database.config';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
+      load: [
+        config
+      ]
     }),
-    TypeOrmModule.forRoot({
-      type: 'postgres',
-      host: 'localhost',
-      port: 5432,
-      username: 'postgres',
-      password: 'postgres',
-      database: 'presence',
-      entities: [__dirname + '/entity/*'],
-      synchronize: true,
+    TypeOrmModule.forRootAsync({
+      imports: [
+        ConfigModule,
+      ],
+      useClass: DatabaseConfig,
     }),
     AuthModule,
     UserModule,
