@@ -1,4 +1,18 @@
-import { Controller } from '@nestjs/common';
+import { Body, Controller, Param, Patch } from '@nestjs/common';
+import { TreatProofInput } from './data/treat-proof.input';
+import { TreatProofOutput } from './data/treat-proof.output';
+import { TreatProofService } from './treat-proof.service';
 
-@Controller('treat-proof')
-export class TreatProofController {}
+@Controller('treatProof')
+export class TreatProofController {
+
+    constructor(
+        private readonly treatProofService: TreatProofService,
+    ) { }
+
+    @Patch(':id')
+    update(@Param('id') id: string, @Body() treatProofInput: TreatProofInput): Promise<TreatProofOutput> {
+        return this.treatProofService.update(id, treatProofInput);
+    }
+
+}

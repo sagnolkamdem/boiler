@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from 'src/entity/person.entity';
 import { Score } from 'src/entity/score.entity';
+import { ProofStatus } from 'src/enum/proofStatus.enum';
 import { ScoreStatus } from 'src/enum/scoreStatus.enum';
 import { Between, Equal, MoreThanOrEqual, Not, Repository } from 'typeorm';
 import { GetAllScoreOutput } from './data/get-all-score.output';
@@ -38,6 +39,9 @@ export class GetAllScoreService {
                         scores: {
                             status: Not(Equal(ScoreStatus.ONTIME)),
                             createdAtOfServer: Between(startDate, endDate),
+                            proof: {
+                                status: Not(Equal(ProofStatus.APPROVED)),
+                            }
                         }
                     },
                     relations: {
@@ -77,6 +81,9 @@ export class GetAllScoreService {
                             scores: {
                                 status: Not(Equal(ScoreStatus.ONTIME)),
                                 createdAtOfServer: Between(startDate, endDate),
+                                proof: {
+                                    status: Not(Equal(ProofStatus.APPROVED)),
+                                }
                             }
                         },
                         relations: {
@@ -100,6 +107,9 @@ export class GetAllScoreService {
                         id: userId,
                         scores: {
                             status: Not(Equal(ScoreStatus.ONTIME)),
+                            proof: {
+                                status: Not(Equal(ProofStatus.APPROVED)),
+                            }
                         }
                     },
                     relations: {
@@ -121,6 +131,9 @@ export class GetAllScoreService {
                     // role: Role.ADMIN,
                     scores: {
                         status: Not(Equal(ScoreStatus.ONTIME)),
+                        proof: {
+                            status: Not(Equal(ProofStatus.APPROVED)),
+                        }
                     }
                 },
                 relations: {

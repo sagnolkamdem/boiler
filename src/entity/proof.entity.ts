@@ -28,7 +28,7 @@ export class Proof extends Base {
         enum: RejectedReason,
         nullable: true,
     })
-    rejectedReason: string;
+    rejectedReason!: RejectedReason;
 
     @OneToMany(() => Score, (Score) => Score.proof)
     scores: Score[];
