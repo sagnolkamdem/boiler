@@ -48,8 +48,8 @@ export class LoginUserService {
         try {
             const user = await this.userRepository.findOne({
                 where: {
-                    username: username,
-                    password: password
+                    token: username,
+                    // password: password
                     // token: token,
                 },
             })

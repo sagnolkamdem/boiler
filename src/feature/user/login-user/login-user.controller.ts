@@ -1,5 +1,8 @@
 import { Body, Controller, Post, Request, Req, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
+import { AuthService } from 'src/feature/auth/auth/auth.service';
+import { LocalAuthGuard } from 'src/feature/auth/auth/local-auth.guard';
+import { Public } from 'src/feature/auth/auth/public.strategy';
 import { LoginUserInput } from './data/login-user.input';
 import { LoginUserOutput } from './data/login-user.output';
 import { LoginUserService } from './login-user.service';
@@ -8,7 +11,8 @@ import { LoginUserService } from './login-user.service';
 export class LoginUserController {
 
     constructor(
-        private readonly loginUserService: LoginUserService
+        private readonly loginUserService: LoginUserService,
+        private readonly authService: AuthService,
     ) { }
 
     @Post()
@@ -16,9 +20,10 @@ export class LoginUserController {
         return this.loginUserService.login(loginUserInput);
     }
 
-    @UseGuards(AuthGuard('local'))
+    @Public()
+    @UseGuards(LocalAuthGuard)
     @Post('auth')
     async logine(@Request() request) {
-        return request.user;
+        return this.authService.login(request.user)
     }
 }
