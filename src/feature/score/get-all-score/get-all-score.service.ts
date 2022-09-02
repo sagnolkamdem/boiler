@@ -37,7 +37,6 @@ export class GetAllScoreService {
                         // Check if the current user is an administrator
                         // role: Role.ADMIN,
                         scores: {
-                            status: Not(Equal(ScoreStatus.ONTIME)),
                             createdAtOfServer: Between(startDate, endDate),
                             proof: {
                                 status: Not(Equal(ProofStatus.APPROVED)),
@@ -79,7 +78,6 @@ export class GetAllScoreService {
                             // role: Role.ADMIN,
                             id: userId,
                             scores: {
-                                status: Not(Equal(ScoreStatus.ONTIME)),
                                 createdAtOfServer: Between(startDate, endDate),
                                 proof: {
                                     status: Not(Equal(ProofStatus.APPROVED)),
@@ -106,7 +104,6 @@ export class GetAllScoreService {
                         // role: Role.ADMIN,
                         id: userId,
                         scores: {
-                            status: Not(Equal(ScoreStatus.ONTIME)),
                             proof: {
                                 status: Not(Equal(ProofStatus.APPROVED)),
                             }
@@ -130,7 +127,6 @@ export class GetAllScoreService {
                     // Check if the current user is an administrator
                     // role: Role.ADMIN,
                     scores: {
-                        status: Not(Equal(ScoreStatus.ONTIME)),
                         proof: {
                             status: Not(Equal(ProofStatus.APPROVED)),
                         }
