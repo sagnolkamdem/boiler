@@ -19,9 +19,6 @@ export class GetUserScoreService {
             const user = await this.userRepository.findOne({
                 where: {
                     id: userId,
-                    scores: {
-                        status: Not(ScoreStatus.ONTIME),
-                    }
                 },
                 relations: {
                     scores: true,

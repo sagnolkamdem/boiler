@@ -15,7 +15,7 @@ export class GetAllProofService {
         @InjectRepository(Proof) private readonly proofRepository: Repository<Proof>,
     ) { }
 
-    async find(userId: string, id: string) {
+    async find(userId?: string, id?: string) {
         try {
 
             if (id && !userId) {
@@ -59,7 +59,7 @@ export class GetAllProofService {
 
                     let j = 0;
                     while( j< user.proofsCreatedBy.length ) {
-                        user.proofsCreatedBy[j].file = join(process.cwd(), user.proofsCreatedBy[j].file)
+                        user.proofsCreatedBy[j].file ? user.proofsCreatedBy[j].file = join(process.cwd(), user.proofsCreatedBy[j].file) : null;
                         j++;
                     }
         
@@ -85,7 +85,7 @@ export class GetAllProofService {
 
                 let j = 0;
                 while( j< user.proofsCreatedBy.length ) {
-                    user.proofsCreatedBy[j].file = join(process.cwd(), user.proofsCreatedBy[j].file)
+                    user.proofsCreatedBy[j].file ? user.proofsCreatedBy[j].file = join(process.cwd(), user.proofsCreatedBy[j].file) : null;
                     j++;
                 }
     
@@ -97,23 +97,6 @@ export class GetAllProofService {
 
             }
 
-            // const users = await this.userRepository.find({
-            //     relations: {
-            //         proofsCreatedBy: true,
-            //     },
-            //     where: {
-            //         proofsCreatedBy: {
-            //             status: ProofStatus.PENDING,
-            //         }
-            //     },
-            // })
-
-            // let j = 0;
-            // while( j< user.proofsCreatedBy.length ) {
-            //     user.proofsCreatedBy[j].file = join(process.cwd(), user.proofsCreatedBy[j].file)
-            //     j++;
-            // }
-
             const proofs = await this.proofRepository.find({
                 where: {
                     status: ProofStatus.PENDING,
@@ -123,12 +106,15 @@ export class GetAllProofService {
                 }
             })
 
+            console.log(proofs);
+            
             let j = 0;
             while( j< proofs.length ) {
-                proofs[j].file = join(process.cwd(), proofs[j].file)
+                proofs[j].file ? proofs[j].file = join(process.cwd(), proofs[j].file) : null;
                 j++;
             }
-
+            
+            
             return {
                 message: "All proofs successfully retrievedd.",
                 statusCode: 200,
@@ -136,6 +122,8 @@ export class GetAllProofService {
             }
             
         } catch (error) {
+            console.log(error);
+            
             return {
                 message: "An error occurred, please check if the data you are transmitting is correct and retry!",
                 statusCode: 500,

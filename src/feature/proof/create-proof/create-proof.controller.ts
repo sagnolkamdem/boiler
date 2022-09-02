@@ -7,6 +7,7 @@ import { ConfigService } from '@nestjs/config';
 
 import { diskStorage } from 'multer';
 import { extname } from 'path';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 
 @Controller('proof')
 export class CreateProofController {
@@ -18,6 +19,8 @@ export class CreateProofController {
         private configService: ConfigService,
     ) { }
 
+    @ApiTags('proof')
+    @ApiBearerAuth()
     @Post()
     @UseInterceptors(FileInterceptor('file', {
         storage: diskStorage({

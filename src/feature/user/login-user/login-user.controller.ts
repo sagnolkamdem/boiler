@@ -16,11 +16,6 @@ export class LoginUserController {
         private readonly authService: AuthService,
     ) { }
 
-    // @Post()
-    // login(@Req() request: Request, @Body() loginUserInput: LoginUserInput): Promise<LoginUserOutput> {
-    //     return this.loginUserService.login(loginUserInput);
-    // }
-
     @ApiTags('user')
     @Public()
     @UseGuards(LocalAuthGuard)

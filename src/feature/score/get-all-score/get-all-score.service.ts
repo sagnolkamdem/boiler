@@ -15,14 +15,13 @@ export class GetAllScoreService {
         @InjectRepository(Score) private readonly scoreRepository: Repository<Score>,
     ) { }
 
-    async find(userId: string, startDate: Date, endDate: Date): Promise<GetAllScoreOutput> {
+    async find(id: string, startDate: Date, endDate: Date): Promise<GetAllScoreOutput> {
 
-        // const now = new Date();
-        // console.log(new Date(`${now.getFullYear()}-${now.getMonth() + 1}-${now.getDate()}`));
+        console.log(id);
         
         try {
 
-            if (startDate && !userId) {
+            if (startDate && !id) {
 
                 if (!endDate) {
                     return {
@@ -31,33 +30,26 @@ export class GetAllScoreService {
                         data: null
                     }
                 }
-                    
-                const user = await this.userRepository.find({
+
+                const scores = await this.scoreRepository.find({
                     where: {
-                        // Check if the current user is an administrator
-                        // role: Role.ADMIN,
-                        scores: {
-                            createdAtOfServer: Between(startDate, endDate),
-                            proof: {
-                                status: Not(Equal(ProofStatus.APPROVED)),
-                            }
-                        }
+                        createdAtOfServer: Between(startDate, endDate),
                     },
                     relations: {
-                        scores: true,
+                        user: true,
                     }
                 })
     
                 return {
                     message: "Data successfully retrieved",
                     statusCode: 200,
-                    data: user,
+                    data: scores,
                 };
 
             }
 
 
-            if (userId) {
+            if (id) {
 
 
 
@@ -70,82 +62,56 @@ export class GetAllScoreService {
                             data: null
                         }
                     }
-                    
-                    
-                    const user = await this.userRepository.find({
+
+                    const score = await this.scoreRepository.findOne({
                         where: {
-                            // Check if the current user is an administrator
-                            // role: Role.ADMIN,
-                            id: userId,
-                            scores: {
-                                createdAtOfServer: Between(startDate, endDate),
-                                proof: {
-                                    status: Not(Equal(ProofStatus.APPROVED)),
-                                }
-                            }
+                            id: id,
+                            createdAtOfServer: Between(startDate, endDate),
                         },
                         relations: {
-                            scores: true,
+                            user: true,
                         }
                     })
         
                     return {
                         message: "Data successfully retrieved",
                         statusCode: 200,
-                        data: user,
+                        data: score,
                     };
 
                 }
 
-
-                const user = await this.userRepository.find({
+                const score = await this.scoreRepository.findOne({
                     where: {
-                        // Check if the current user is an administrator
-                        // role: Role.ADMIN,
-                        id: userId,
-                        scores: {
-                            proof: {
-                                status: Not(Equal(ProofStatus.APPROVED)),
-                            }
-                        }
+                        id: id,
                     },
                     relations: {
-                        scores: true,
+                        user: true,
                     }
-                })
-    
+                });
+
                 return {
                     message: "Data successfully retrieved",
                     statusCode: 200,
-                    data: user,
+                    data: score,
                 };
             }
 
+            console.log("ok");
 
-            const user = await this.userRepository.find({
-                where: {
-                    // Check if the current user is an administrator
-                    // role: Role.ADMIN,
-                    scores: {
-                        proof: {
-                            status: Not(Equal(ProofStatus.APPROVED)),
-                        }
-                    }
-                },
+            const scores = await this.scoreRepository.find({
                 relations: {
-                    scores: true,
+                    user: true,
                 }
-            })
+            });
 
             return {
                 message: "Data successfully retrieved",
                 statusCode: 200,
-                data: user,
+                data: scores,
             };
 
         } catch (error) {
-            console.log(error);
-            
             return {
                 message: "An error occurred",
                 statusCode: 500,
