@@ -1,5 +1,6 @@
 import { Body, Controller, Post, Request, Req, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
+import { ApiTags } from '@nestjs/swagger';
 import { AuthService } from 'src/feature/auth/auth/auth.service';
 import { LocalAuthGuard } from 'src/feature/auth/auth/local-auth.guard';
 import { Public } from 'src/feature/auth/auth/public.strategy';
@@ -15,11 +16,12 @@ export class LoginUserController {
         private readonly authService: AuthService,
     ) { }
 
-    @Post()
-    login(@Req() request: Request, @Body() loginUserInput: LoginUserInput): Promise<LoginUserOutput> {
-        return this.loginUserService.login(loginUserInput);
-    }
+    // @Post()
+    // login(@Req() request: Request, @Body() loginUserInput: LoginUserInput): Promise<LoginUserOutput> {
+    //     return this.loginUserService.login(loginUserInput);
+    // }
 
+    @ApiTags('user')
     @Public()
     @UseGuards(LocalAuthGuard)
     @Post('auth')
