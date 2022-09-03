@@ -15,13 +15,11 @@ export class GetAllScoreService {
         @InjectRepository(Score) private readonly scoreRepository: Repository<Score>,
     ) { }
 
-    async find(id: string, startDate: Date, endDate: Date): Promise<GetAllScoreOutput> {
-
-        console.log(id);
+    async find(userId: string, startDate: Date, endDate: Date): Promise<GetAllScoreOutput> {
         
         try {
 
-            if (startDate && !id) {
+            if (startDate && !userId) {
 
                 if (!endDate) {
                     return {
@@ -30,27 +28,31 @@ export class GetAllScoreService {
                         data: null
                     }
                 }
-
-                const scores = await this.scoreRepository.find({
+                    
+                const user = await this.userRepository.find({
                     where: {
-                        createdAtOfServer: Between(startDate, endDate),
+                        // Check if the current user is an administrator
+                        // role: Role.ADMIN,
+                        scores: {
+                            createdAtOfServer: Between(startDate, endDate),
+                        }
                     },
                     relations: {
-                        user: true,
+                        scores: true,
+                        // proofsCreatedBy: true,
                     }
                 })
     
                 return {
                     message: "Data successfully retrieved",
                     statusCode: 200,
-                    data: scores,
+                    data: user,
                 };
 
             }
 
 
-            if (id) {
-
+            if (userId) {
 
 
                 if (startDate) {
@@ -62,56 +64,64 @@ export class GetAllScoreService {
                             data: null
                         }
                     }
-
-                    const score = await this.scoreRepository.findOne({
+                    
+                    
+                    const user = await this.userRepository.find({
                         where: {
-                            id: id,
-                            createdAtOfServer: Between(startDate, endDate),
+                            id: userId,
+                            scores: {
+                                createdAtOfServer: Between(startDate, endDate),
+                            }
                         },
                         relations: {
-                            user: true,
+                            scores: true,
+                            // proofsCreatedBy: true,
                         }
                     })
         
                     return {
                         message: "Data successfully retrieved",
                         statusCode: 200,
-                        data: score,
+                        data: user,
                     };
 
                 }
 
-                const score = await this.scoreRepository.findOne({
+
+                const user = await this.userRepository.find({
                     where: {
-                        id: id,
+                        id: userId,
                     },
                     relations: {
-                        user: true,
+                        scores: true,
+                        // proofsCreatedBy: true,
                     }
-                });
-
+                })
+    
                 return {
                     message: "Data successfully retrieved",
                     statusCode: 200,
-                    data: score,
+                    data: user,
                 };
             }
 
-            console.log("ok");
 
-            const scores = await this.scoreRepository.find({
+            const user = await this.userRepository.find({
                 relations: {
-                    user: true,
+                    scores: true,
+                    // proofsCreatedBy: true,
                 }
-            });
+            })
 
             return {
                 message: "Data successfully retrieved",
                 statusCode: 200,
-                data: scores,
+                data: user,
             };
 
         } catch (error) {
+            console.log(error);
+            
             return {
                 message: "An error occurred",
                 statusCode: 500,

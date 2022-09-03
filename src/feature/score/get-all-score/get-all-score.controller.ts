@@ -17,8 +17,8 @@ export class GetAllScoreController {
     @ApiTags('score')
     @ApiBearerAuth()
     @ApiParam({
-        name: 'id',
-        description: 'Id of score',
+        name: 'userId',
+        description: 'Id of user to get all scores of that user',
         required: false
     })
     @ApiParam({
@@ -33,8 +33,6 @@ export class GetAllScoreController {
     })
     @Get()
     find(@Query() query: any): Promise<GetAllScoreOutput> {
-        console.log(query);
-        
-        return this.getAllScoreService.find(query.id, query.startDate, query.endDate);
+        return this.getAllScoreService.find(query.userId, query.startDate, query.endDate);
     }
 }
