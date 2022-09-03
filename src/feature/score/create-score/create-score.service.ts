@@ -3,7 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { User } from 'src/entity/person.entity';
 import { Score } from 'src/entity/score.entity';
 import { ScoreStatus } from 'src/enum/scoreStatus.enum';
-import { Repository } from 'typeorm';
+import { Equal, Not, Repository } from 'typeorm';
 import { CreateScoreInput } from './data/create-score.input';
 import { CreateScoreOutput } from './data/create-score.output';
 import { Cron } from '@nestjs/schedule';
@@ -154,14 +154,30 @@ export class CreateScoreService {
 
                 } else {
 
-                    const createScoreInput = {
-                        user: await this.userRepository.findOneBy({id: this.userIdTab[j]}),
-                        status: ScoreStatus.ABSENT,
-                    };
+                    const score = await this.scoreRepository.findOne({
+                        where: {
+                            createdAtDate: `${now.getFullYear()}-${now.getMonth() + 1}-${now.getDate()}`,
+                            user: {
+                                id: this.userIdTab[j],
+                            },
+                        },
+                        relations: {
+                            user: true,
+                        }
+                    })
 
-                    await this.scoreRepository.save(createScoreInput);
+                    if(!score) {
+                        console.log("ok!!!");
+                        
 
-                    console.log(this.userIdTab[j]);
+                        const createScoreInput = {
+                            user: await this.userRepository.findOneBy({id: this.userIdTab[j]}),
+                            createdAtDate: `${now.getFullYear()}-${now.getMonth() + 1}-${now.getDate()}`,
+                            status: ScoreStatus.ABSENT,
+                        };
+
+                        await this.scoreRepository.save(createScoreInput);
+                    }
 
                 }
 
