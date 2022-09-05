@@ -6,6 +6,7 @@ import { User } from 'src/entity/person.entity';
 import { Proof } from 'src/entity/proof.entity';
 import { ProofStatus } from 'src/enum/proofStatus.enum';
 import { Repository } from 'typeorm';
+import { GetProofFileService } from '../get-proof-file/get-proof-file.service';
 
 @Injectable()
 export class GetAllProofService {
@@ -14,6 +15,7 @@ export class GetAllProofService {
         @InjectRepository(User) private readonly userRepository: Repository<User>,
         // @InjectRepository(Score) private readonly scoreRepository: Repository<Score>,
         @InjectRepository(Proof) private readonly proofRepository: Repository<Proof>,
+        private readonly getProofFileService: GetProofFileService,
     ) { }
 
     async find(userId?: string, id?: string) {
@@ -30,13 +32,6 @@ export class GetAllProofService {
                         concerns: true,
                     }
                 })
-
-                
-                if (proof.file) {
-                    let a : any = proof.file;
-                    a = new StreamableFile(createReadStream(join(process.cwd(),proof.file)));
-                    proof.file = a;
-                }
     
                 return {
                     message: "Proof successfully retrieved.",
@@ -62,16 +57,6 @@ export class GetAllProofService {
                             proofsCreatedBy: true,
                         }
                     })
-
-                    let j = 0;
-                    while( j< user.proofsCreatedBy.length ) {
-                        if (user.proofsCreatedBy[j].file) {
-                            let a : any = user.proofsCreatedBy[j].file;
-                            a = new StreamableFile(createReadStream(join(process.cwd(), user.proofsCreatedBy[j].file)));
-                            user.proofsCreatedBy[j].file = a;
-                        }
-                        j++;
-                    }
         
                     return {
                         message: "All proofs successfully retrieved.",
@@ -92,17 +77,6 @@ export class GetAllProofService {
                         proofsCreatedBy: true,
                     }
                 })
-
-                let j = 0;
-                while( j< user?.proofsCreatedBy?.length ) {
-                    if (user.proofsCreatedBy[j]?.file) {
-
-                        let a : any = user?.proofsCreatedBy[j]?.file;
-                        a = new StreamableFile(createReadStream(join(process.cwd(), user.proofsCreatedBy[j].file)));
-                        user.proofsCreatedBy[j].file = a;
-                    }
-                    j++;
-                }
     
                 return {
                     message: "All proofs successfully retrieved.",
@@ -120,17 +94,6 @@ export class GetAllProofService {
                     concerns: true,
                 }
             })
-            
-            let j = 0;
-            while( j< proofs.length ) {
-                if (proofs[j].file) {
-                    let a : any = proofs[j].file;
-                    a = new StreamableFile(createReadStream(join(process.cwd(), proofs[j].file)));
-                    proofs[j].file = a;
-                    console.log(proofs[j].file);
-                }
-                j++;
-            }
             
             
             return {

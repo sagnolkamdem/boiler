@@ -17,12 +17,9 @@ export class CreateProofService {
     ) { }
 
     async create(createProofInput: CreateProofInput, file: Express.Multer.File): Promise<CreateProofOutput> {
-
-        console.log(createProofInput);
         
-
         try {
-            createProofInput.file ? createProofInput.file = file.path : null;
+            createProofInput.file ? createProofInput.file = file.filename : null;
             
             await this.proofRepository.save(createProofInput);
 
