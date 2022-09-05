@@ -24,7 +24,7 @@ build-artifacts:
   stage: build
   tags:
     - ci
-  when: manual
+  # when: manual
   only:
     - trunk
   script:
@@ -41,7 +41,7 @@ build-docker-image:
   stage: build
   tags:
     - ci
-  when: manual
+  # when: manual
   only:
     - trunk
   services:
@@ -56,7 +56,7 @@ push-image-to-gitlab-registry:
   stage: release
   tags:
     - ci
-  when: manual
+  # when: manual
   only:
     - trunk
   services:
@@ -71,7 +71,7 @@ deploy-to-dev-env:
   stage: deploy
   tags:
     - ci
-  when: manual
+  # when: manual
   only:
     - trunk
   extends: .install_dependencies
