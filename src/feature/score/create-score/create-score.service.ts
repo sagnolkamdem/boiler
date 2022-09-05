@@ -7,6 +7,7 @@ import { Equal, Not, Repository } from 'typeorm';
 import { CreateScoreInput } from './data/create-score.input';
 import { CreateScoreOutput } from './data/create-score.output';
 import { Cron } from '@nestjs/schedule';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class CreateScoreService {
@@ -19,9 +20,11 @@ export class CreateScoreService {
     constructor(
         @InjectRepository(User) private readonly userRepository: Repository<User>,
         @InjectRepository(Score) private readonly scoreRepository: Repository<Score>,
+        private readonly configService: ConfigService,
     ) { }
 
     async create(createScoreInput: CreateScoreInput): Promise<CreateScoreOutput> {
+        
         try {
             const user = await this.userRepository.findOne({
                 where: {
@@ -56,14 +59,18 @@ export class CreateScoreService {
                 if ( conditionOne && conditionTwo && conditionThree && conditionFour) {
                     
                     if (!score) {
+
+                        // Time server error
+                        let hour;
+                        this.configService.get<string>('APP_MODE') != "local" ? hour = now.getHours() + 1 : hour = now.getHours();
                         
                         // Set created score and updatedAt
                         createScoreInput.createdAtDate = `${now.getFullYear()}-${now.getMonth() + 1}-${now.getDate()}`;
                         createScoreInput.updatedAtDate = `${now.getFullYear()}-${now.getMonth() + 1}-${now.getDate()}`;
 
 
-                        createScoreInput.createdAtTime = `${now.getHours()}:${now.getMinutes()}:${now.getSeconds()}`;
-                        createScoreInput.updatedAtTime = `${now.getHours()}:${now.getMinutes()}:${now.getSeconds()}`;
+                        createScoreInput.createdAtTime = `${hour}:${now.getMinutes()}:${now.getSeconds()}`;
+                        createScoreInput.updatedAtTime = `${hour}:${now.getMinutes()}:${now.getSeconds()}`;
 
                         if (now.getHours() >= 9) {
                             createScoreInput.status = ScoreStatus.LATE;

@@ -13,10 +13,12 @@ import { AddProofService } from './add-proof/add-proof.service';
 import { Proof } from 'src/entity/proof.entity';
 import { GetScoreStatisticsController } from './get-score-statistics/get-score-statistics.controller';
 import { GetScoreStatisticsService } from './get-score-statistics/get-score-statistics.service';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
     imports: [
         TypeOrmModule.forFeature([User, Score, Proof]),
+        ConfigModule
     ],
     providers: [CreateScoreService, GetAllScoreService, GetUserScoreService, AddProofService, GetScoreStatisticsService],
     controllers: [CreateScoreController, GetAllScoreController, GetUserScoreController, AddProofController, GetScoreStatisticsController],
