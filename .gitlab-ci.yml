@@ -3,6 +3,7 @@ stages:
   - test
   - release
   - deploy
+  # - operate
 
 variables:
   TAG: "$CI_COMMIT_REF_SLUG-$CI_PIPELINE_ID"
@@ -23,7 +24,7 @@ build-artifacts:
   stage: build
   tags:
     - ci
-  #when: manual
+  when: manual
   only:
     - trunk
   script:
@@ -40,12 +41,13 @@ build-docker-image:
   stage: build
   tags:
     - ci
-  #when: manual
+  when: manual
   only:
     - trunk
   services:
     - docker:20.10.17-dind
   script:
+    - echo "Build Image"
     - docker info
     - docker build -t "$CI_REGISTRY_IMAGE" .
 
@@ -54,7 +56,7 @@ push-image-to-gitlab-registry:
   stage: release
   tags:
     - ci
-  #when: manual
+  when: manual
   only:
     - trunk
   services:
@@ -62,19 +64,37 @@ push-image-to-gitlab-registry:
   before_script:
     - echo "$CI_REGISTRY_PASSWORD" | docker login -u "$CI_REGISTRY_USER" "$CI_REGISTRY" --password-stdin
   script:
+    - echo "Push Image to Registry"
     - docker push "$CI_REGISTRY_IMAGE"
 
-# deploy-to-target-server:
-#   stage: deploy
-#   tags:
-#     - ci
-#   #when: manual
-#   only:
-#     - trunk
-#   extends: .install_dependencies
-#   script:
-#     ###### Pull the registry to deployment server and recereate the docker service #####
-#     - ssh $SSH_USER@$EC2_IPADDRESS docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" "$CI_REGISTRY"
-#     # - ssh $SSH_USER@$EC2_IPADDRESS docker pull $CI_REGISTRY_IMAGE:latest
-#     - ssh $SSH_USER@$EC2_IPADDRESS docker-compose -f isdglabs/isdg-node_test-skwork/docker-compose.yml up -d
+deploy-to-dev-env:
+  stage: deploy
+  tags:
+    - ci
+  when: manual
+  only:
+    - trunk
+  extends: .install_dependencies
+  script:
+    - echo "Deploy Stage"
+    ###### Login registry into server #####
+    - ssh $SSH_USER@$SERVER_IPADDRESS docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" "$CI_REGISTRY"
+    ###### Pull the registry to deployment server #####
+    # Auto pull is active with gitlab runner
+    # - ssh $SSH_USER@$SERVER_IPADDRESS docker pull $CI_REGISTRY_IMAGE:latest
+    ##### recereate the docker service #####
+    - ssh $SSH_USER@$SERVER_IPADDRESS docker-compose --env-file "$PATH_TO_ENV_DEV"  -f "$PATH_TO_COMPOSE_DEV"  up -d --build
 
+deploy-to-prod-env:
+  stage: deploy
+  tags:
+    - ci
+  when: manual
+  only:
+    - main
+  extends: .install_dependencies
+  script:
+    - echo "Deploy Stage"
+    ###### Login registry into server #####
+    - ssh $SSH_USER@$SERVER_IPADDRESS docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" "$CI_REGISTRY"
+    - ssh $SSH_USER@$SERVER_IPADDRESS docker-compose --env-file "$PATH_TO_ENV_PROD"  -f "$PATH_TO_COMPOSE_PROD"  up -d --build
