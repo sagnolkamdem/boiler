@@ -48,13 +48,13 @@ export class CreateScoreService {
                 })
                 
                 // Condition about latitude
-                const conditionOne: boolean = 4.88 > createScoreInput.latitude;
-                const conditionTwo: boolean = 4.3 < createScoreInput.latitude;
+                const conditionOne: boolean = 4.09 > createScoreInput.latitude;
+                const conditionTwo: boolean = 4.07 < createScoreInput.latitude;
                 
                 
                 // Condition about longitude
-                const conditionThree: boolean = 2.88 > createScoreInput.longitude;
-                const conditionFour: boolean = 2.3 < createScoreInput.longitude;
+                const conditionThree: boolean = 9.73 > createScoreInput.longitude;
+                const conditionFour: boolean = 9.71 < createScoreInput.longitude;
                 
                 if ( conditionOne && conditionTwo && conditionThree && conditionFour) {
                     
@@ -96,7 +96,7 @@ export class CreateScoreService {
 
                 } else {
                     return {
-                        message: "Score was not saved successfully because your position is invalid.",
+                        message: "Score was not saved because your position is invalid.",
                         statusCode: 400,
                         score: null,
                     }
