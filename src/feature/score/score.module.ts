@@ -14,13 +14,17 @@ import { Proof } from 'src/entity/proof.entity';
 import { GetScoreStatisticsController } from './get-score-statistics/get-score-statistics.controller';
 import { GetScoreStatisticsService } from './get-score-statistics/get-score-statistics.service';
 import { ConfigModule } from '@nestjs/config';
+import { GetScoreWithStatisticsController } from './get-score-with-statistics/get-score-with-statistics.controller';
+import { GetScoreWithStatisticsService } from './get-score-with-statistics/get-score-with-statistics.service';
+import { GetBadScoreService } from './get-bad-score/get-bad-score.service';
+import { GetBadScoreController } from './get-bad-score/get-bad-score.controller';
 
 @Module({
     imports: [
         TypeOrmModule.forFeature([User, Score, Proof]),
         ConfigModule
     ],
-    providers: [CreateScoreService, GetAllScoreService, GetUserScoreService, AddProofService, GetScoreStatisticsService],
-    controllers: [CreateScoreController, GetAllScoreController, GetUserScoreController, AddProofController, GetScoreStatisticsController],
+    providers: [CreateScoreService, GetAllScoreService, GetUserScoreService, AddProofService, GetScoreStatisticsService, GetScoreWithStatisticsService, GetBadScoreService],
+    controllers: [CreateScoreController, GetAllScoreController, GetUserScoreController, AddProofController, GetScoreStatisticsController, GetScoreWithStatisticsController, GetBadScoreController],
 })
 export class ScoreModule {}
