@@ -174,9 +174,6 @@ export class CreateScoreService {
                     })
 
                     if(!score) {
-                        console.log("ok!!!");
-                        
-
                         const createScoreInput = {
                             user: await this.userRepository.findOneBy({id: this.userIdTab[j]}),
                             createdAtDate: `${now.getFullYear()}-${now.getMonth() + 1}-${now.getDate()}`,
@@ -192,7 +189,6 @@ export class CreateScoreService {
             }
 
         } catch (error) {
-            console.log(error);
         }
     }
 }
