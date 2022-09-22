@@ -20,7 +20,7 @@ export class CreateScoreService {
     constructor(
         @InjectRepository(User) private readonly userRepository: Repository<User>,
         @InjectRepository(Score) private readonly scoreRepository: Repository<Score>,
-        private readonly configService: ConfigService,
+        private readonly configService: ConfigService
     ) { }
 
     async create(createScoreInput: CreateScoreInput): Promise<CreateScoreOutput> {
