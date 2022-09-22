@@ -1,0 +1,100 @@
+stages:
+  - build
+  - test
+  - release
+  - deploy
+  # - operate
+
+variables:
+  TAG: "$CI_COMMIT_REF_SLUG-$CI_PIPELINE_ID"
+
+.install_dependencies:
+  before_script:
+    ###### Login to deployment server using SSH #####
+    - mkdir -p ~/.ssh
+    - echo "$SSH_PRIVATE_KEY" | tr -d '\r' > ~/.ssh/id_rsa
+    - chmod 600 ~/.ssh/id_rsa
+    - 'which ssh-agent || ( apt-get update -y && apt-get install openssh-client -y )'
+    - eval "$(ssh-agent -s)"
+    - ssh-add ~/.ssh/id_rsa
+    - ssh-keyscan -H $SERVER_IPADDRESS >> ~/.ssh/known_hosts
+
+build-artifacts:
+  image: node:16
+  stage: build
+  tags:
+    - ci
+  # when: manual
+  only:
+    - trunk
+  script:
+    - echo "Build Stage"
+    - npm install
+    - npm run build
+  #    - cp .env.example .env
+  artifacts:
+    paths:
+      - ./dist
+
+build-docker-image:
+  image: docker:20.10.17
+  stage: build
+  tags:
+    - ci
+  # when: manual
+  only:
+    - trunk
+  services:
+    - docker:20.10.17-dind
+  script:
+    - echo "Build Image"
+    - docker info
+    - docker build -t "$CI_REGISTRY_IMAGE" .
+
+push-image-to-gitlab-registry:
+  image: docker:20.10.17
+  stage: release
+  tags:
+    - ci
+  # when: manual
+  only:
+    - trunk
+  services:
+    - docker:20.10.17-dind
+  before_script:
+    - echo "$CI_REGISTRY_PASSWORD" | docker login -u "$CI_REGISTRY_USER" "$CI_REGISTRY" --password-stdin
+  script:
+    - echo "Push Image to Registry"
+    - docker push "$CI_REGISTRY_IMAGE"
+
+deploy-to-dev-env:
+  stage: deploy
+  tags:
+    - ci
+  # when: manual
+  only:
+    - trunk
+  extends: .install_dependencies
+  script:
+    - echo "Deploy Stage"
+    ###### Login registry into server #####
+    - ssh $SSH_USER@$SERVER_IPADDRESS docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" "$CI_REGISTRY"
+    ###### Pull the registry to deployment server #####
+    # Auto pull is active with gitlab runner
+    # - ssh $SSH_USER@$SERVER_IPADDRESS docker pull $CI_REGISTRY_IMAGE:latest
+    ##### recereate the docker service #####
+    - ssh $SSH_USER@$SERVER_IPADDRESS docker-compose --env-file "$PATH_TO_ENV_DEV"  -f "$PATH_TO_COMPOSE_DEV"  up -d --build
+
+deploy-to-prod-env:
+  stage: deploy
+  tags:
+    - ci
+  when: manual
+  only:
+    - main
+  extends: .install_dependencies
+  script:
+    - echo "Deploy Stage"
+    ###### Login registry into server #####
+    - ssh $SSH_USER@$SERVER_IPADDRESS docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" "$CI_REGISTRY"
+    - ssh $SSH_USER@$SERVER_IPADDRESS docker-compose --env-file "$PATH_TO_ENV_PROD"  -f "$PATH_TO_COMPOSE_PROD"  up -d --build
