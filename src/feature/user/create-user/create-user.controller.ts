@@ -28,6 +28,7 @@ export class CreateUserController {
         status: 500,
         description: "An error occurred while creating user!",
     })
+    @Public()
     @Post()
     create(@Body() userInput: UserInput): Promise<UserOutput> {
         return this.createUserService.create(userInput);
