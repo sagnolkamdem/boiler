@@ -7,7 +7,7 @@ export class UserInput {
 
     @ApiProperty()
     @IsNotEmpty()
-    name: string
+    name: string;
 
     @ApiProperty()
     @IsOptional()
