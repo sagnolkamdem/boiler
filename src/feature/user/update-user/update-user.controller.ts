@@ -1,7 +1,7 @@
 import { Body, Controller, Param, Patch } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { UserUpdateInput } from './data/userUpdate.input';
-import { UserUpdateOutput } from './data/userupdate.output';
+import { UserUpdateOutput } from './data/userUpdate.output';
 import { UpdateUserService } from './update-user.service';
 
 @Controller('user')

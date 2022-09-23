@@ -1,6 +1,5 @@
 import { ApiProperty, ApiPropertyOptional } from "@nestjs/swagger";
-import { IsNotEmpty, IsOptional } from "class-validator";
-import { Role } from "src/enum/role.enum";
+import { IsOptional } from "class-validator";
 import { Service } from "src/enum/service.enum";
 
 export class UserUpdateInput {
