@@ -3,29 +3,25 @@ import { IsNotEmpty, IsOptional } from "class-validator";
 import { Role } from "src/enum/role.enum";
 import { Service } from "src/enum/service.enum";
 
-export class UserInput {
-
-    @ApiProperty()
-    @IsNotEmpty()
-    name: string;
+export class UserUpdateInput {
 
     @ApiProperty()
     @IsOptional()
-    token: string;
+    name: string;
 
     @ApiProperty({
         name: "service",
         enum: Service,
     })
-    @IsNotEmpty()
+    @IsOptional()
     service: Service;
 
     @ApiProperty()
-    @IsNotEmpty()
+    @IsOptional()
     phoneNumber: string;
 
     @ApiProperty()
-    @IsNotEmpty()
+    @IsOptional()
     email: string;
 
     @ApiProperty()
@@ -45,12 +41,4 @@ export class UserInput {
     })
     @IsOptional()
     salary: number;
-
-    @ApiPropertyOptional({
-        name: 'role',
-        enum: Role,
-        default: Role.EMPLOYEE,
-    })
-    @IsOptional()
-    role: Role;
 }

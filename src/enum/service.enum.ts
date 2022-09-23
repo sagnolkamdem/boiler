@@ -6,4 +6,5 @@ export enum Service {
     ACCOUNTING = 'accounting',
     ACTIVATION = 'activation',
     ACCOUNTMANAGER = 'accountManager',
+    OTHER = 'other',
 }
