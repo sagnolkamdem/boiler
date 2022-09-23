@@ -23,6 +23,8 @@ export class CreateUserService {
                 token: user.token,
             };
         } catch (error) {
+            console.log(error);
+            
             return {
                 message: "An error occurred while creating user",
                 statusCode: 500,

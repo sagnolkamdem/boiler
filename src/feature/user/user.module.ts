@@ -8,6 +8,8 @@ import { LoginUserController } from './login-user/login-user.controller';
 import { LoginUserService } from './login-user/login-user.service';
 import { JwtModule } from '@nestjs/jwt';
 import { jwtConstants } from '../auth/constants';
+import { UpdateUserController } from './update-user/update-user.controller';
+import { UpdateUserService } from './update-user/update-user.service';
 
 @Module({
     imports: [
@@ -17,7 +19,7 @@ import { jwtConstants } from '../auth/constants';
             signOptions: { expiresIn: '365d' },
           }),
     ],
-    controllers: [CreateUserController, LoginUserController],
-    providers: [CreateUserService, LoginUserService, AuthService]
+    controllers: [CreateUserController, LoginUserController, UpdateUserController],
+    providers: [CreateUserService, LoginUserService, AuthService, UpdateUserService]
 })
 export class UserModule {}
