@@ -70,8 +70,8 @@ export class CreateScoreService {
                         createScoreInput.updatedAtDate = `${now.getFullYear()}-${now.getMonth() + 1}-${now.getDate()}`;
 
 
-                        createScoreInput.createdAtTime = `${hour}:${now.getMinutes()}:${now.getSeconds()}`;
-                        createScoreInput.updatedAtTime = `${hour}:${now.getMinutes()}:${now.getSeconds()}`;
+                        createScoreInput.createdAtTime = `${now.getHours()}:${now.getMinutes()}:${now.getSeconds()}`;
+                        createScoreInput.updatedAtTime = `${now.getHours()}:${now.getMinutes()}:${now.getSeconds()}`;
 
                         if (now.getHours() >= 9) {
                             createScoreInput.status = ScoreStatus.LATE;
