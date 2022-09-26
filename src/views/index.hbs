@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <style>
+      *
+      {
+        padding: 0;
+        margin: 0;
+        box-sizing: border-box;
+      }
+      main
+      {
+        height: 100vh;
+        width: 100vw;
+        background-color: white;
+      }
+
+      .container
+      {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        height: 100%;
+        gap: 24px;
+        padding-right: 40px;
+        padding-left: 40px;
+      }
+      
+      .top
+      {
+        display: flex;
+        width: 100%;
+        flex-direction: column;
+        align-items: center;
+        gap: 24px;
+      }
+
+      img
+      {
+        width: 100px;
+        height: 100px;
+        object-fit: cover;
+      }
+
+      .formulaire
+      {
+        display: flex;
+        width: 100%;
+        flex-direction: column;
+        gap: 8px;
+      }
+
+      .item
+      {
+        display: flex;
+      }
+
+    </style>
+    <meta charset="utf-8" />
+    
+    <title>App</title>
+  </head>
+  <body>
+    <main>
+      <div class="container">
+
+        <div class="top" style="margin-top: 30px;">
+          <img src="/img/appstore.png" alt="">
+          <h3>No RCCM: RC/DLA/DLA/2018/B/2015 NIU: M061812707811H</h3>
+          <div class="formulaire">
+            <div class="item">
+              <p>Noms et prénoms :  {{ user.name }}</p>
+            </div>
+            <div class="item">
+              <p>Date et lieu de naissance : {{ user.dob }}</p>
+            </div>
+            <div class="item">
+              <p>Poste :</p>
+            </div>
+            <div class="item">
+              <p>Net a percevoir :</p>
+            </div>
+            <div class="item">
+              <p style="width: 50%;">Periode :</p>
+              <p style="width: 50%;">Date : {{ now }}</p>
+            </div>
+            <div class="item" style="margin-top: 16px;">
+              <p style="width: 50%;">CNI et signature du beneficiaire</p>
+              <p style="width: 50%;">Visa Responsable ISDG</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="top" style="margin-top: 30px;">
+          <img src="/img/appstore.png" alt="">
+          <h3>No RCCM: RC/DLA/DLA/2018/B/2015 NIU: M061812707811H</h3>
+          <div class="formulaire">
+            <div class="item">
+              <p>Noms et prénoms :  {{ user.name }}</p>
+            </div>
+            <div class="item">
+              <p>Date et lieu de naissance : {{ user.dob }}</p>
+            </div>
+            <div class="item">
+              <p>Poste :</p>
+            </div>
+            <div class="item">
+              <p>Net a percevoir :</p>
+            </div>
+            <div class="item">
+              <p style="width: 50%;">Periode :</p>
+              <p style="width: 50%;">Date : {{ now }}</p>
+            </div>
+            <div class="item" style="margin-top: 16px;">
+              <p style="width: 50%;">CNI et signature du beneficiaire</p>
+              <p style="width: 50%;">Visa Responsable ISDG</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </main>
+  </body>
+</html>

@@ -122,7 +122,7 @@ export class CreateScoreService {
         }
     }
 
-    @Cron('0 0 17 * * 1-5')
+    @Cron('0 0 16 * * 1-5')
     async handleCron() {
         try {
             const now = new Date();
