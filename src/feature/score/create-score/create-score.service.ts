@@ -62,7 +62,8 @@ export class CreateScoreService {
 
                         // Time server error
                         let hour;
-                        this.configService.get<string>('APP_MODE') != "local" ? hour = now.getHours() + 1 : hour = now.getHours();
+                        // hour = now.getHours();
+                        hour = now.getHours() + 1
                         
                         // Set created score and updatedAt
                         createScoreInput.createdAtDate = `${now.getFullYear()}-${now.getMonth() + 1}-${now.getDate()}`;
