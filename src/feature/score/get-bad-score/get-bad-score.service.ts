@@ -31,7 +31,7 @@ export class GetBadScoreService {
                         id: query.userId,
                         scores: {
                             createdAtOfServer: Between(query.startDate, query.endDate),
-                            status: Not(ScoreStatus.ONTIME),
+                            status: query.status ?? Not(ScoreStatus.ONTIME),
                         }
                     },
                     relations: {
@@ -49,7 +49,7 @@ export class GetBadScoreService {
                     where: {
                         scores: {
                             createdAtOfServer: Between(query.startDate, query.endDate),
-                            status: Not(ScoreStatus.ONTIME),
+                            status: query.status ?? Not(ScoreStatus.ONTIME),
                         }
                     },
                     relations: {
@@ -65,7 +65,6 @@ export class GetBadScoreService {
             }
             
         } catch (error) {
-            console.log(error);
             
             return {
                 message: "An error occurred",

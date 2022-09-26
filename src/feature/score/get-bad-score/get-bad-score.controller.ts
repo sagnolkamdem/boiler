@@ -23,6 +23,11 @@ export class GetBadScoreController {
         required: false
     })
     @ApiParam({
+        name: 'status',
+        description: 'absent or late or nothing',
+        required: false
+    })
+    @ApiParam({
         name: 'endDate',
         description: 'The date to end getting scores from. that value is required when you enter the start date',
         required: false
