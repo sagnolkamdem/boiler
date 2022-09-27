@@ -69,24 +69,39 @@
           <h3>No RCCM: RC/DLA/DLA/2018/B/2015 NIU: M061812707811H</h3>
           <div class="formulaire">
             <div class="item">
-              <p>Noms et prénoms :  {{ user.name }}</p>
+              <p>Noms et prénoms : </p>
+              <h3 style="flex: 1; border-bottom: 3px dotted black; margin-left: 4px;">{{ user.name }}</h3>
             </div>
             <div class="item">
-              <p>Date et lieu de naissance : {{ user.dob }}</p>
+              <p>Date et lieu de naissance : </p>
+              <h3 style="flex: 1; border-bottom: 3px dotted black; margin-left: 4px;">{{ user.dob }}</h3>
             </div>
             <div class="item">
               <p>Poste :</p>
+              <h3 style="flex: 1; border-bottom: 3px dotted black; margin-left: 4px;"></h3>
             </div>
             <div class="item">
               <p>Net a percevoir :</p>
+              <h3 style="flex: 1; border-bottom: 3px dotted black; margin-left: 4px;"></h3>
             </div>
             <div class="item">
-              <p style="width: 50%;">Periode :</p>
-              <p style="width: 50%;">Date : {{ now }}</p>
+              <div style="display: flex; width: 50%;">
+                <p>Periode :</p>
+                <h3 style="flex: 1; border-bottom: 3px dotted black; margin-left: 4px; margin-right: 20px;"></h3>
+              </div>
+              <div style="display: flex; width: 50%;">
+                <p>Date :</p>
+                <h3 style="flex: 1; border-bottom: 3px dotted black; margin-left: 4px; margin-right: 20px;">{{ now }}</h3>
+              </div>
             </div>
             <div class="item" style="margin-top: 16px;">
-              <p style="width: 50%;">CNI et signature du beneficiaire</p>
-              <p style="width: 50%;">Visa Responsable ISDG</p>
+              <div style="display: flex; flex-direction: column; width: 50%;">
+                <p>CNI et signature du beneficiaire</p>
+                <h3 style="margin-right: 24px; margin-top: 8px">{{ user.cni }}</h3>
+              </div>
+              <div style="display: flex; flex-direction: column; width: 50%;">
+                <p>Visa Responsable ISDG</p>
+              </div>
             </div>
           </div>
         </div>
@@ -96,24 +111,39 @@
           <h3>No RCCM: RC/DLA/DLA/2018/B/2015 NIU: M061812707811H</h3>
           <div class="formulaire">
             <div class="item">
-              <p>Noms et prénoms :  {{ user.name }}</p>
+              <p>Noms et prénoms : </p>
+              <h3 style="flex: 1; border-bottom: 3px dotted black; margin-left: 4px;">{{ user.name }}</h3>
             </div>
             <div class="item">
-              <p>Date et lieu de naissance : {{ user.dob }}</p>
+              <p>Date et lieu de naissance : </p>
+              <h3 style="flex: 1; border-bottom: 3px dotted black; margin-left: 4px;">{{ user.dob }}</h3>
             </div>
             <div class="item">
               <p>Poste :</p>
+              <h3 style="flex: 1; border-bottom: 3px dotted black; margin-left: 4px;"></h3>
             </div>
             <div class="item">
               <p>Net a percevoir :</p>
+              <h3 style="flex: 1; border-bottom: 3px dotted black; margin-left: 4px;"></h3>
             </div>
             <div class="item">
-              <p style="width: 50%;">Periode :</p>
-              <p style="width: 50%;">Date : {{ now }}</p>
+              <div style="display: flex; width: 50%;">
+                <p>Periode :</p>
+                <h3 style="flex: 1; border-bottom: 3px dotted black; margin-left: 4px; margin-right: 20px;"></h3>
+              </div>
+              <div style="display: flex; width: 50%;">
+                <p>Date :</p>
+                <h3 style="flex: 1; border-bottom: 3px dotted black; margin-left: 4px; margin-right: 20px;">{{ now }}</h3>
+              </div>
             </div>
             <div class="item" style="margin-top: 16px;">
-              <p style="width: 50%;">CNI et signature du beneficiaire</p>
-              <p style="width: 50%;">Visa Responsable ISDG</p>
+              <div style="display: flex; flex-direction: column; width: 50%;">
+                <p>CNI et signature du beneficiaire</p>
+                <h3 style="margin-right: 24px; margin-top: 8px">{{ user.cni }}</h3>
+              </div>
+              <div style="display: flex; flex-direction: column; width: 50%;">
+                <p>Visa Responsable ISDG</p>
+              </div>
             </div>
           </div>
         </div>
