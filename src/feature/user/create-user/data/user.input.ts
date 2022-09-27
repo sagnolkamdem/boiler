@@ -53,4 +53,8 @@ export class UserInput {
     })
     @IsOptional()
     role: Role;
+    
+    @ApiPropertyOptional()
+    @IsOptional()
+    job: string;
 }
