@@ -40,4 +40,8 @@ export class UserUpdateInput {
     })
     @IsOptional()
     salary: number;
+
+    @ApiProperty()
+    @IsOptional()
+    job: string;
 }

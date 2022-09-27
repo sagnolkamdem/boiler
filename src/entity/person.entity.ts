@@ -22,6 +22,11 @@ export class User extends Base {
     })
     password: string;
 
+    @Column({
+        default: "qw"
+    })
+    job: string;
+
     @Column()
     token: string;
 
