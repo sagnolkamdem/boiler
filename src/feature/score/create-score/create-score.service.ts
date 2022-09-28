@@ -73,7 +73,7 @@ export class CreateScoreService {
                         createScoreInput.createdAtTime = `${hour}:${now.getMinutes()}:${now.getSeconds()}`;
                         createScoreInput.updatedAtTime = `${hour}:${now.getMinutes()}:${now.getSeconds()}`;
 
-                        if (hour >= 9) {
+                        if (hour >= 9 && now.getMinutes() >= 3) {
                             createScoreInput.status = ScoreStatus.LATE;
                         } else {
                             createScoreInput.status = ScoreStatus.ONTIME;
