@@ -18,10 +18,11 @@ import { GetScoreWithStatisticsController } from './get-score-with-statistics/ge
 import { GetScoreWithStatisticsService } from './get-score-with-statistics/get-score-with-statistics.service';
 import { GetBadScoreService } from './get-bad-score/get-bad-score.service';
 import { GetBadScoreController } from './get-bad-score/get-bad-score.controller';
+import { CountDate } from 'src/entity/startDate.entity';
 
 @Module({
     imports: [
-        TypeOrmModule.forFeature([User, Score, Proof]),
+        TypeOrmModule.forFeature([User, Score, Proof, CountDate]),
         ConfigModule
     ],
     providers: [CreateScoreService, GetAllScoreService, GetUserScoreService, AddProofService, GetScoreStatisticsService, GetScoreWithStatisticsService, GetBadScoreService],
