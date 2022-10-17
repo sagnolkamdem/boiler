@@ -1,3 +1,5 @@
+import { CreateUpdateCountDateService } from './feature/count-date/create-update-count-date/createupdatecountdate.service';
+import { CountDateModule } from './feature/count-date/countdate.module';
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
@@ -15,16 +17,13 @@ import { DatabaseConfig } from 'database.config';
 
 @Module({
   imports: [
+    CountDateModule,
     ConfigModule.forRoot({
       isGlobal: true,
-      load: [
-        config
-      ]
+      load: [config],
     }),
     TypeOrmModule.forRootAsync({
-      imports: [
-        ConfigModule,
-      ],
+      imports: [ConfigModule],
       useClass: DatabaseConfig,
     }),
     AuthModule,
@@ -32,12 +31,12 @@ import { DatabaseConfig } from 'database.config';
     ScoreModule,
     ScheduleModule.forRoot(),
     MulterModule.register({
-      dest: './uploads'
+      dest: './uploads',
     }),
     ProofModule,
     PayStubModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [ AppService],
 })
 export class AppModule {}

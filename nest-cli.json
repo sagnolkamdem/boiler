@@ -6,7 +6,8 @@
     "webpack": false,
     "assets": [
       "**/*.hbs",
-      "**/*.png"
+      "**/*.png",
+      "**/*.jpg"
     ],
     "watchAssets": true
   },
