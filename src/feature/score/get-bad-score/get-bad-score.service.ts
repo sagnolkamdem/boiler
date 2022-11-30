@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from 'src/entity/person.entity';
@@ -16,29 +17,34 @@ export class GetBadScoreService {
 
     async getBadScore(query: any): Promise<GetBadScoreOutput> {
         try {
+            let start, end;
 
-            // if (query.startDate && !query.endDate) {
-            //     return {
-            //         message: "You need to specify a start date and end date!",
-            //         statusCode: 400,
-            //         data: null,
-            //     };
-            // }
-
-            const startDateV2 = await this.dateRepository.findOne({
-                select: {
-                    startDate: true,
-                },
-                where: {
-                    id: '3ea33c4a-27a3-48b4-b5aa-e5fe0f6eefe8'
+            if (query.startDate ) {
+                if (!query.endDate) {
+                    return {
+                        message: "You need to specify a start date and end date!",
+                        statusCode: 400,
+                        data: null,
+                    };
                 }
-            })
+                start = query.startDate;
+                end = query.endDate;
+            } else {
+                const startDateV2 = await this.dateRepository.findOne({
+                    select: {
+                        startDate: true,
+                    },
+                    where: {
+                        id: '3ea33c4a-27a3-48b4-b5aa-e5fe0f6eefe8'
+                    }
+                })
+                start = startDateV2.startDate;
+            }
 
-            const start = startDateV2.startDate;
             
 
             if (query.userId) {
-                const user = await this.userRepository.findOne({
+                let user = await this.userRepository.findOne({
                     where: {
                         id: query.userId,
                         scores: {
@@ -50,6 +56,20 @@ export class GetBadScoreService {
                         scores: true,
                     }
                 });
+                if (end) {
+                    user = await this.userRepository.findOne({
+                        where: {
+                            id: query.userId,
+                            scores: {
+                                createdAtOfServer: Raw((alias) => `${alias} > :start_date AND ${alias} < :end_date`, { start_date: start, end_date: end }),
+                                status: query.status ?? Not(ScoreStatus.ONTIME),
+                            }
+                        },
+                        relations: {
+                            scores: true,
+                        }
+                    });
+                }
     
                 return {
                     message: "Data of that user successfully retrieved",
@@ -57,7 +77,7 @@ export class GetBadScoreService {
                     data: user,
                 };
             } else {
-                const users = await this.userRepository.find({
+                let users = await this.userRepository.find({
                     where: {
                         scores: {
                             createdAtOfServer: Raw((alias) => `${alias} > :date`, { date: start }),
@@ -68,6 +88,21 @@ export class GetBadScoreService {
                         scores: true,
                     }
                 });
+
+                if (end) {
+                     users = await this.userRepository.find({
+                        where: {
+                            scores: {
+                                createdAtOfServer: Raw((alias) => `${alias} > :date`, { date: start }),
+                                createdAtOfServer: Raw((alias) => `${alias} < :date`, { date: end }),
+                                status: query.status ?? Not(ScoreStatus.ONTIME),
+                            }
+                        },
+                        relations: {
+                            scores: true,
+                        }
+                    });
+                }
     
                 return {
                     message: "Data of all users successfully retrieved",
