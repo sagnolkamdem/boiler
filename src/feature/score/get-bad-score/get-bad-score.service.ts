@@ -93,8 +93,7 @@ export class GetBadScoreService {
                      users = await this.userRepository.find({
                         where: {
                             scores: {
-                                createdAtOfServer: Raw((alias) => `${alias} > :date`, { date: start }),
-                                createdAtOfServer: Raw((alias) => `${alias} < :date`, { date: end }),
+                                createdAtOfServer: Raw((alias) => `${alias} > :start_date AND ${alias} < :end_date`, { start_date: start, end_date: end }),
                                 status: query.status ?? Not(ScoreStatus.ONTIME),
                             }
                         },
