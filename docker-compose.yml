@@ -1,0 +1,50 @@
+version: '3.8'
+
+services:
+  postgres_presence:
+    container_name: pg-presence${APP_MODE}
+    image: postgres
+    restart: always
+    # env_file: ./.env
+    networks:
+      - webnet
+    environment:
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_USER: ${DB_USERNAME}
+      POSTGRES_DB: ${DB_DATABASE}
+      PG_DATA: /var/lib/postgresql/data
+    ports:
+      - $DB_PORT:$DB_PORT
+    expose:
+      - ${DB_PORT}
+    command: -p ${DB_PORT}
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+  api_presence:
+    container_name: api-presence${APP_MODE}
+    image: yanopsisdg/presence-api
+    depends_on:
+      - postgres_presence
+    restart: always
+    volumes:
+      - .:/presence-api
+      - /presence-api/node_modules
+    ports:
+      - ${APP_PORT}:${APP_PORT}
+    environment:
+      APP_PORT: ${APP_PORT}
+      APP_MODE: ${APP_MODE}
+      APP_DEBUG: ${APP_DEBUG}
+      DB_TYPE: ${DB_TYPE}
+      DB_HOST: ${DB_HOST}
+      DB_PORT: ${DB_PORT}
+      DB_USERNAME: ${DB_USERNAME}
+      DB_PASSWORD: ${DB_PASSWORD}
+      DB_DATABASE: ${DB_DATABASE}
+    command: npm run start
+    networks:
+      - webnet
+networks:
+  webnet:
+volumes:
+  pgdata:
