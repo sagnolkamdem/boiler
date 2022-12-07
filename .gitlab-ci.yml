@@ -26,7 +26,7 @@ build-artifacts:
     - ci
   # when: manual
   only:
-    - trunk
+    - develop
   script:
     - echo "Build Stage"
     - npm install
@@ -43,7 +43,7 @@ build-docker-image:
     - ci
   # when: manual
   only:
-    - trunk
+    - develop
   services:
     - docker:20.10.17-dind
   script:
@@ -58,7 +58,7 @@ push-image-to-gitlab-registry:
     - ci
   # when: manual
   only:
-    - trunk
+    - develop
   services:
     - docker:20.10.17-dind
   before_script:
@@ -73,7 +73,7 @@ deploy-to-dev-env:
     - ci
   # when: manual
   only:
-    - trunk
+    - develop
   extends: .install_dependencies
   script:
     - echo "Deploy Stage"
