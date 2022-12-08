@@ -74,7 +74,7 @@ export class GetBadScoreService {
                 return {
                     message: "Data of that user successfully retrieved",
                     statusCode: 200,
-                    data: [user,'rayan'],
+                    data: user,
                 };
             } else {
                 let users = await this.userRepository.find({
@@ -106,7 +106,7 @@ export class GetBadScoreService {
                 return {
                     message: "Data of all users successfully retrieved",
                     statusCode: 200,
-                    data: [users,'rayan'],
+                    data: users,
                 };
             }
             
