@@ -1,50 +1,65 @@
-import { ScoreStatus } from "src/enum/scoreStatus.enum";
-import { BaseEntity, Column, CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
-import { User } from "./person.entity";
-import { Proof } from "./proof.entity";
+import { ScoreType } from './../enum/scoreType.enum';
+import { ScoreStatus } from 'src/enum/scoreStatus.enum';
+import {
+  BaseEntity,
+  Column,
+  CreateDateColumn,
+  Entity,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from 'typeorm';
+import { User } from './person.entity';
+import { Proof } from './proof.entity';
 
 @Entity()
 export class Score extends BaseEntity {
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
-    @PrimaryGeneratedColumn('uuid')
-    id: string;
+  @CreateDateColumn()
+  createdAtOfServer: Date;
 
-    @CreateDateColumn()
-    createdAtOfServer: Date;
+  @Column({
+    type: 'date',
+    nullable: true,
+  })
+  createdAtDate: string;
 
-    @Column({
-        type: 'date',
-        nullable: true,
-    })
-    createdAtDate: string;
+  @Column({
+    type: 'time',
+    nullable: true,
+  })
+  createdAtTime: string;
 
-    @Column({
-        type: 'time',
-        nullable: true,
-    })
-    createdAtTime: string;
+  @Column({
+    type: 'date',
+    nullable: true,
+  })
+  updatedAtDate: string;
 
-    @Column({
-        type: 'date',
-        nullable: true,
-    })
-    updatedAtDate: string;
+  @Column({
+    type: 'time',
+    nullable: true,
+  })
+  updatedAtTime: string;
 
-    @Column({
-        type: 'time',
-        nullable: true,
-    })
-    updatedAtTime: string;
+  @Column({
+    type: 'enum',
+    enum: ScoreStatus,
+  })
+  status: ScoreStatus;
 
-    @Column({
-        type: "enum",
-        enum: ScoreStatus
-    })
-    status: ScoreStatus;
+  @Column({
+    nullable: true,
+    type: 'enum',
+    enum: ScoreType,
+  })
+  type: ScoreType;
 
-    @ManyToOne(() => User, (user) => user.scores)
-    user: User;
+  @ManyToOne(() => User, (user) => user.scores)
+  user: User;
 
-    @ManyToOne(() => Proof, (proof) => proof.scores)
-    proof!: Proof;
+  @ManyToOne(() => Proof, (proof) => proof.scores)
+  proof!: Proof;
 }

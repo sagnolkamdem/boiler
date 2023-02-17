@@ -1,3 +1,4 @@
+import { Score } from 'src/entity/score.entity';
 import { OneToMany } from 'typeorm';
 import { User } from 'src/entity/person.entity';
 import { Proof } from 'src/entity/proof.entity';
@@ -49,15 +50,15 @@ export class Permission extends Base {
 
   @Column({
     nullable: true,
-    type: 'date',
+    type: 'time',
   })
-  scan_out: Date;
+  out_time: string;
 
   @Column({
     nullable: true,
-    type: 'date',
+    type: 'time',
   })
-  scan_in: Date;
+  in_time: string;
 
   @Column({
     nullable: true,
@@ -79,4 +80,10 @@ export class Permission extends Base {
 
   @OneToMany(() => Proof, (proof) => proof.concernedPermission)
   proofs!: Proof[];
+
+  @OneToOne(() => Score, (score) => score.id)
+  scan_out!: Score;
+
+  @OneToOne(() => Score, (score) => score.id)
+  scan_in!: Score;
 }
