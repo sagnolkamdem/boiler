@@ -45,3 +45,9 @@ lerna-debug.log*
 # docker-compose.yml
 docker-compose*
 Dockerfile.v2
+
+#Env File
+.env 
+.env.dev
+.env.test
+.env.prod

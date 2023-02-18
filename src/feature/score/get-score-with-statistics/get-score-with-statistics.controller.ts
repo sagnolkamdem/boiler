@@ -4,13 +4,12 @@ import { GetScoreWithStatisticsService } from './get-score-with-statistics.servi
 
 @Controller('getScore')
 export class GetScoreWithStatisticsController {
+  constructor(
+    private getScoreWithStatisticsService: GetScoreWithStatisticsService,
+  ) {}
 
-    constructor(
-        private getScoreWithStatisticsService: GetScoreWithStatisticsService,
-    ) {}
-
-    @Get()
-    getScore(@Query() query: any): Promise<any> {
-        return this.getScoreWithStatisticsService.getScore(query);
-    }
+  @Get()
+  getScore(@Query() query: any): Promise<any> {
+    return this.getScoreWithStatisticsService.getScore(query);
+  }
 }

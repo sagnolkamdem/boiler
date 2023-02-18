@@ -1,4 +1,11 @@
-import { Body, Controller, Post, Request, Req, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Post,
+  Request,
+  Req,
+  UseGuards,
+} from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { ApiTags } from '@nestjs/swagger';
 import { AuthService } from 'src/feature/auth/auth/auth.service';
@@ -10,17 +17,16 @@ import { LoginUserService } from './login-user.service';
 
 @Controller('login')
 export class LoginUserController {
+  constructor(
+    private readonly loginUserService: LoginUserService,
+    private readonly authService: AuthService,
+  ) {}
 
-    constructor(
-        private readonly loginUserService: LoginUserService,
-        private readonly authService: AuthService,
-    ) { }
-
-    @ApiTags('user')
-    @Public()
-    @UseGuards(LocalAuthGuard)
-    @Post('auth')
-    async logine(@Request() request) {
-        return this.authService.login(request.user)
-    }
+  @ApiTags('user')
+  @Public()
+  @UseGuards(LocalAuthGuard)
+  @Post('auth')
+  async logine(@Request() request) {
+    return this.authService.login(request.user);
+  }
 }

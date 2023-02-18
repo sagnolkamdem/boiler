@@ -6,15 +6,14 @@ import { CreateScoreOutput } from './data/create-score.output';
 
 @Controller('score')
 export class CreateScoreController {
+  constructor(private readonly createScoreService: CreateScoreService) {}
 
-    constructor(
-        private readonly createScoreService: CreateScoreService,
-    ) { }
-
-    @ApiBearerAuth()
-    @ApiTags("score")
-    @Post()
-    async create(@Body() createScoreInput: CreateScoreInput): Promise<CreateScoreOutput> { 
-        return await this.createScoreService.create(createScoreInput);
-    }
+  @ApiBearerAuth()
+  @ApiTags('score')
+  @Post()
+  async create(
+    @Body() createScoreInput: CreateScoreInput,
+  ): Promise<CreateScoreOutput> {
+    return await this.createScoreService.create(createScoreInput);
+  }
 }

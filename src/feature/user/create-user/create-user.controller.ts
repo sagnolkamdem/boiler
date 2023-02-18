@@ -8,29 +8,26 @@ import { UserOutput } from './data/user.output';
 
 @Controller('user')
 export class CreateUserController {
+  constructor(private readonly createUserService: CreateUserService) {}
 
-    constructor(
-        private readonly createUserService: CreateUserService,
-    ) { }
-
-    @ApiTags('user')
-    @ApiBearerAuth()
-    @ApiParam({
-        name: 'username',
-        type: 'string',
-        required: false,
-    })
-    @ApiResponse({
-        status: 201,
-        description: "User created successfully!",
-    })
-    @ApiResponse({
-        status: 500,
-        description: "An error occurred while creating user!",
-    })
-    @Public()
-    @Post()
-    create(@Body() userInput: UserInput): Promise<UserOutput> {
-        return this.createUserService.create(userInput);
-    }
+  @ApiTags('user')
+  @ApiBearerAuth()
+  @ApiParam({
+    name: 'username',
+    type: 'string',
+    required: false,
+  })
+  @ApiResponse({
+    status: 201,
+    description: 'User created successfully!',
+  })
+  @ApiResponse({
+    status: 500,
+    description: 'An error occurred while creating user!',
+  })
+  @Public()
+  @Post()
+  create(@Body() userInput: UserInput): Promise<UserOutput> {
+    return this.createUserService.create(userInput);
+  }
 }
