@@ -47,7 +47,7 @@ docker-compose*
 Dockerfile.v2
 
 #Env File
-.env 
+.env
 .env.dev
 .env.test
 .env.prod
