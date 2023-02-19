@@ -1,7 +1,14 @@
 import { Permission } from './../permissions/entities/permission.entity';
 import { ProofStatus } from 'src/enum/proofStatus.enum';
 import { RejectedReason } from 'src/enum/rejectedReason.enum';
-import { Column, Entity, ManyToOne, OneToMany } from 'typeorm';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  OneToMany,
+  OneToOne,
+} from 'typeorm';
 import { Base } from './base.entity';
 import { User } from './person.entity';
 import { Score } from './score.entity';
@@ -39,6 +46,7 @@ export class Proof extends Base {
   @ManyToOne(() => User, (user) => user.proofsCreatedBy)
   concerns: User;
 
-  @ManyToOne(() => Permission, (permission) => permission.proofs)
+  @OneToOne(() => Permission, (permission) => permission.proofs)
+  @JoinColumn()
   concernedPermission!: Permission;
 }
