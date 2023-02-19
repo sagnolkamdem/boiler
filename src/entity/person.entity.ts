@@ -1,7 +1,7 @@
 import { Permission } from './../permissions/entities/permission.entity';
 import { Role } from 'src/enum/role.enum';
 import { Service } from 'src/enum/service.enum';
-import { Column, Entity, Generated, OneToMany } from 'typeorm';
+import { Column, Entity, Generated, OneToMany, ManyToOne } from 'typeorm';
 import { Base } from './base.entity';
 import { PayStub } from './payStub.entity';
 import { Proof } from './proof.entity';
@@ -86,9 +86,9 @@ export class User extends Base {
   @OneToMany(() => Proof, (proof) => proof.concerns)
   proofsCreatedBy!: Proof[];
 
-  @OneToMany(() => Permission, (permissions) => permissions.user_id)
-  permissions!: Permission[];
+  @OneToMany(() => Permission, (permissions) => permissions.user)
+  permissions: Permission[];
 
-  @OneToMany(() => Permission, (permissions) => permissions.updated_by)
-  permissionsUpdated!: Permission[];
+  @OneToMany(() => Permission, (permissions) => permissions.validated_by)
+  permissionsUpdated: Permission[];
 }

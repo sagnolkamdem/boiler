@@ -1,5 +1,5 @@
 import { Score } from 'src/entity/score.entity';
-import { OneToMany } from 'typeorm';
+import { JoinColumn, ManyToOne, OneToMany } from 'typeorm';
 import { User } from 'src/entity/person.entity';
 import { Proof } from 'src/entity/proof.entity';
 import { PermissionStatus } from 'src/enum/permissionStatus.enum';
@@ -32,10 +32,11 @@ export class Permission extends Base {
     enum: PermissionStatus,
     default: PermissionStatus.NEW,
   })
-  service: PermissionStatus;
+  status: PermissionStatus;
 
   @Column({
     type: 'enum',
+    default: PermissionType.ABSENCE,
     enum: PermissionType,
   })
   type: PermissionType;
@@ -72,18 +73,22 @@ export class Permission extends Base {
   })
   end_date: Date;
 
-  @OneToOne(() => User, (User) => User.permissions)
+  @ManyToOne(() => User, (User) => User.permissions)
+  @JoinColumn()
   user: User;
 
-  @OneToOne(() => User, (User) => User.permissionsUpdated)
+  @ManyToOne(() => User, (User) => User.permissionsUpdated)
+  @JoinColumn({ name: 'updated_by' })
   validated_by: User;
 
-  @OneToMany(() => Proof, (proof) => proof.concernedPermission)
-  proofs!: Proof[];
+  @OneToOne(() => Proof, (proof) => proof.concernedPermission)
+  proofs: Proof;
 
   @OneToOne(() => Score, (score) => score.id)
-  scan_out!: Score;
+  @JoinColumn()
+  scan_out: Score;
 
   @OneToOne(() => Score, (score) => score.id)
-  scan_in!: Score;
+  @JoinColumn()
+  scan_in: Score;
 }
