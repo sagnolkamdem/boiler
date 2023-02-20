@@ -86,7 +86,7 @@ export class User extends Base {
   @OneToMany(() => Proof, (proof) => proof.concerns)
   proofsCreatedBy!: Proof[];
 
-  @OneToMany(() => Permission, (permissions) => permissions.user)
+  @OneToMany(() => Permission, (permission) => permission.user_id)
   permissions: Permission[];
 
   @OneToMany(() => Permission, (permissions) => permissions.validated_by)

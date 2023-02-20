@@ -58,8 +58,33 @@ export class PermissionsService {
     return `This action returns all permissions`;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} permission`;
+  async findOne(id: string): Promise<GetAllPermissionsDTO> {
+    const permission = await this.permissionRepository.findOne({
+      where: {
+        id: id,
+      },
+      relations: {
+        user: true,
+        validated_by: true,
+        proofs: true,
+        scan_out: true,
+        scan_in: true,
+      },
+    });
+
+    if (permission) {
+      return {
+        message: 'Permission got successfully',
+        statusCode: 201,
+        data: permission,
+      };
+    } else {
+      return {
+        message: 'Permission not found',
+        statusCode: 404,
+        data: null,
+      };
+    }
   }
 
   async update(

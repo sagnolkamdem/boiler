@@ -9,7 +9,9 @@ import { Base } from 'src/entity/base.entity';
 
 @Entity('permissions')
 export class Permission extends Base {
-  @Column()
+  @Column({
+    nullable: false,
+  })
   user_id: string;
 
   @Column({
@@ -74,7 +76,7 @@ export class Permission extends Base {
   end_date: Date;
 
   @ManyToOne(() => User, (User) => User.permissions)
-  @JoinColumn()
+  @JoinColumn({ name: 'user_id' })
   user: User;
 
   @ManyToOne(() => User, (User) => User.permissionsUpdated)
@@ -82,6 +84,7 @@ export class Permission extends Base {
   validated_by: User;
 
   @OneToOne(() => Proof, (proof) => proof.concernedPermission)
+  @JoinColumn({ name: 'proof_id' })
   proofs: Proof;
 
   @OneToOne(() => Score, (score) => score.id)
