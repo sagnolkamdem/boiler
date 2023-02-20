@@ -15,6 +15,7 @@ import { PayStubModule } from './feature/pay-stub/pay-stub.module';
 import { config } from '../config';
 import { DatabaseConfig } from 'database.config';
 import { AlertModule } from './feature/position-alert/alert.module';
+import { PermissionsModule } from './permissions/permissions.module';
 
 @Module({
   imports: [
@@ -36,7 +37,8 @@ import { AlertModule } from './feature/position-alert/alert.module';
     }),
     ProofModule,
     PayStubModule,
-    AlertModule
+    AlertModule,
+    PermissionsModule,
   ],
   controllers: [AppController],
   providers: [ AppService],
