@@ -14,6 +14,7 @@ import { ConfigModule } from '@nestjs/config';
 import { PayStubModule } from './feature/pay-stub/pay-stub.module';
 import { config } from '../config';
 import { DatabaseConfig } from 'database.config';
+import { AlertModule } from './feature/position-alert/alert.module';
 
 @Module({
   imports: [
@@ -35,6 +36,7 @@ import { DatabaseConfig } from 'database.config';
     }),
     ProofModule,
     PayStubModule,
+    AlertModule
   ],
   controllers: [AppController],
   providers: [ AppService],

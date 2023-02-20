@@ -1,3 +1,6 @@
+import { Alert } from "src/entity/alert.entity";
+import { User } from "src/entity/person.entity";
+
 export const config = () => ({
     port: Number(process.env.APP_PORT), 
     database: 
@@ -8,7 +11,7 @@ export const config = () => ({
             username: process.env.DB_USERNAME,
             password: process.env.DB_PASSWORD,
             database: process.env.DB_DATABASE,
-            entities: ["dist/**/*.entity.js"],
+            entities: ["dist/**/*.entity.{js,ts}"],
             synchronize: true
         }
 })

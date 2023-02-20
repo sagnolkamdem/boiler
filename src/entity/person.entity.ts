@@ -1,6 +1,7 @@
 import { Role } from "src/enum/role.enum";
 import { Service } from "src/enum/service.enum";
 import { Column, Entity, Generated, OneToMany } from "typeorm";
+import { Alert } from "./alert.entity";
 import { Base } from "./base.entity";
 import { PayStub } from "./payStub.entity";
 import { Proof } from "./proof.entity";
@@ -85,5 +86,8 @@ export class User extends Base {
 
     @OneToMany(() => Proof, (proof) => proof.concerns)
     proofsCreatedBy!: Proof[];
+
+    @OneToMany(() => Alert, (alert) => alert.user)
+    alerts: Alert[]; 
 
 }

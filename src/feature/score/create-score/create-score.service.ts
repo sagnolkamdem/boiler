@@ -112,8 +112,6 @@ export class CreateScoreService {
                 }
             }
         } catch (error) {
-            console.log(error);
-            
             return {
                     message: "An error occurred",
                     statusCode: 500,
