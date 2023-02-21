@@ -19,7 +19,7 @@ export class PermissionsService {
     @InjectRepository(Proof)
     private readonly proofRepository: Repository<Proof>,
     @InjectRepository(Score)
-    private readonly scoreRepository: Repository<Proof>,
+    private readonly scoreRepository: Repository<Score>,
   ) {}
 
   async create(
@@ -33,12 +33,14 @@ export class PermissionsService {
         },
       });
       if (user) {
-        const createProofInput = {
-          file: file.path,
-          concerns: user,
-        };
-        const proof = await this.proofRepository.save(createProofInput);
-        createPermissionDto.proof_id = proof.id;
+        if (file) {
+          const createProofInput = {
+            file: file.path,
+            concerns: user,
+          };
+          const proof = await this.proofRepository.save(createProofInput);
+          createPermissionDto.proof_id = proof.id;
+        }
         const permission = await this.permissionRepository.save(
           createPermissionDto,
         );
@@ -244,6 +246,37 @@ export class PermissionsService {
       return {
         message: 'An error occurred',
         statusCode: 500,
+        data: null,
+      };
+    }
+  }
+
+  async scanOut(
+    id: string,
+    updatePermissionDto: UpdatePermissionDto,
+  ): Promise<GetAllPermissionsDTO> {
+    const permission = await this.permissionRepository.findOne({
+      where: {
+        id: id,
+      },
+    });
+
+    if (permission) {
+      await this.permissionRepository.update(id, updatePermissionDto);
+      const perm = await this.permissionRepository.findOne({
+        where: {
+          id: id,
+        },
+      });
+      return {
+        message: 'Permission updated successfully',
+        statusCode: 201,
+        data: perm,
+      };
+    } else {
+      return {
+        message: 'Permission not found',
+        statusCode: 404,
         data: null,
       };
     }

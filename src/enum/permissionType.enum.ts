@@ -1,4 +1,4 @@
 export enum PermissionType {
-  OUTING = 'outing',
+  OUTING = 'OUTING',
   ABSENCE = 'ABSENCE',
 }
