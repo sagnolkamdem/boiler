@@ -82,12 +82,12 @@ export class User extends Base {
   payStubs: PayStub[];
 
   @OneToMany(() => Proof, (proof) => proof.treatBy)
-  proofsTreatedBy!: Proof[];
+  proofsTreatedBy: Proof[];
 
   @OneToMany(() => Proof, (proof) => proof.concerns)
-  proofsCreatedBy!: Proof[];
+  proofsCreatedBy: Proof[];
 
-  @OneToMany(() => Permission, (permission) => permission.user_id)
+  @OneToMany(() => Permission, (permission) => permission.user)
   permissions: Permission[];
 
     @OneToMany(() => Alert, (alert) => alert.user)

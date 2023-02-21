@@ -15,7 +15,9 @@ import { Score } from './score.entity';
 
 @Entity()
 export class Proof extends Base {
-  @Column()
+  @Column({
+    nullable: true,
+  })
   message: string;
 
   @Column({
@@ -41,12 +43,11 @@ export class Proof extends Base {
   scores: Score[];
 
   @ManyToOne(() => User, (user) => user.proofsTreatedBy)
-  treatBy!: User;
+  treatBy: User;
 
   @ManyToOne(() => User, (user) => user.proofsCreatedBy)
   concerns: User;
 
   @OneToOne(() => Permission, (permission) => permission.proofs)
-  @JoinColumn()
   concernedPermission!: Permission;
 }

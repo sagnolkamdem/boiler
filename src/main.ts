@@ -12,7 +12,7 @@ async function bootstrap() {
 
   app.useGlobalPipes(new ValidationPipe({ whitelist: true, transform: true }));
   app.setGlobalPrefix('api');
-  
+
   app.enableCors();
   // Set configService
   const configService = app.get(ConfigService);
@@ -31,10 +31,12 @@ async function bootstrap() {
 
   SwaggerModule.setup('api', app, document);
 
-  app.useStaticAssets(join(__dirname, '..', 'public'));
+  // app.useStaticAssets(join(__dirname, '..', 'public'));
+  app.useStaticAssets(join(__dirname, '..', 'public'), {
+    prefix: '/upload/',
+  });
   app.setBaseViewsDir(join(__dirname, '..', 'views'));
   app.setViewEngine('hbs');
-
 
   await app.listen(port);
 }

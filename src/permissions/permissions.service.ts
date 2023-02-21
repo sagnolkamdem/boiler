@@ -7,6 +7,7 @@ import { Between, Repository } from 'typeorm';
 import { CreatePermissionDto } from './dto/create-permission.dto';
 import { UpdatePermissionDto } from './dto/update-permission.dto';
 import { Permission } from './entities/permission.entity';
+import { Proof } from 'src/entity/proof.entity';
 
 @Injectable()
 export class PermissionsService {
@@ -15,11 +16,16 @@ export class PermissionsService {
     private readonly permissionRepository: Repository<Permission>,
     @InjectRepository(User)
     private readonly userRepository: Repository<User>,
+    @InjectRepository(Proof)
+    private readonly proofRepository: Repository<Proof>,
     @InjectRepository(Score)
-    private readonly scoreRepository: Repository<Score>,
+    private readonly scoreRepository: Repository<Proof>,
   ) {}
 
-  async create(createPermissionDto: CreatePermissionDto) {
+  async create(
+    createPermissionDto: CreatePermissionDto,
+    file: Express.Multer.File,
+  ) {
     try {
       const user = await this.userRepository.findOne({
         where: {
@@ -27,6 +33,12 @@ export class PermissionsService {
         },
       });
       if (user) {
+        const createProofInput = {
+          file: file.path,
+          concerns: user,
+        };
+        const proof = await this.proofRepository.save(createProofInput);
+        createPermissionDto.proof_id = proof.id;
         const permission = await this.permissionRepository.save(
           createPermissionDto,
         );

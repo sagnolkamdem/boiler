@@ -1,3 +1,4 @@
+import { Proof } from './../entity/proof.entity';
 import { Module } from '@nestjs/common';
 import { PermissionsService } from './permissions.service';
 import { PermissionsController } from './permissions.controller';
@@ -8,7 +9,10 @@ import { ConfigModule } from '@nestjs/config';
 import { Permission } from './entities/permission.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([User, Score, Permission]), ConfigModule],
+  imports: [
+    TypeOrmModule.forFeature([User, Score, Permission, Proof]),
+    ConfigModule,
+  ],
   controllers: [PermissionsController],
   providers: [PermissionsService],
 })

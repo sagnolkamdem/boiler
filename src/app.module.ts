@@ -33,7 +33,7 @@ import { PermissionsModule } from './permissions/permissions.module';
     ScoreModule,
     ScheduleModule.forRoot(),
     MulterModule.register({
-      dest: './uploads',
+      dest: './upload',
     }),
     ProofModule,
     PayStubModule,
@@ -41,6 +41,6 @@ import { PermissionsModule } from './permissions/permissions.module';
     PermissionsModule,
   ],
   controllers: [AppController],
-  providers: [ AppService],
+  providers: [AppService],
 })
 export class AppModule {}
