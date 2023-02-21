@@ -88,10 +88,10 @@ export class Permission extends Base {
   proofs: Proof;
 
   @OneToOne(() => Score, (score) => score.id)
-  @JoinColumn()
+  @JoinColumn({ name: 'out_time' })
   scan_out: Score;
 
   @OneToOne(() => Score, (score) => score.id)
-  @JoinColumn()
+  @JoinColumn({ name: 'in_time' })
   scan_in: Score;
 }

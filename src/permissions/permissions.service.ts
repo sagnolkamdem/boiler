@@ -253,15 +253,139 @@ export class PermissionsService {
 
   async scanOut(
     id: string,
-    updatePermissionDto: UpdatePermissionDto,
+    updatePermissionDto: any,
   ): Promise<GetAllPermissionsDTO> {
+    let score: any;
     const permission = await this.permissionRepository.findOne({
       where: {
         id: id,
       },
+      relations: {
+        user: true,
+      },
     });
 
+    const now = new Date();
     if (permission) {
+      if (permission.user) {
+        const createScoreInput = updatePermissionDto;
+        // Condition about latitude
+        const conditionOne: boolean = 4.09 > createScoreInput.latitude;
+        const conditionTwo: boolean = 4.07 < createScoreInput.latitude;
+
+        // Condition about longitude
+        const conditionThree: boolean = 9.73 > createScoreInput.longitude;
+        const conditionFour: boolean = 9.71 < createScoreInput.longitude;
+
+        if (conditionOne && conditionTwo && conditionThree && conditionFour) {
+          // Time server error
+          const hour = now.getHours() + 1;
+
+          // Set created score and updatedAt
+          createScoreInput.createdAtDate = `${now.getFullYear()}-${
+            now.getMonth() + 1
+          }-${now.getDate()}`;
+          createScoreInput.updatedAtDate = `${now.getFullYear()}-${
+            now.getMonth() + 1
+          }-${now.getDate()}`;
+
+          createScoreInput.createdAtTime = `${hour}:${now.getMinutes()}:${now.getSeconds()}`;
+          createScoreInput.updatedAtTime = `${hour}:${now.getMinutes()}:${now.getSeconds()}`;
+
+          score = await this.scoreRepository.save(createScoreInput);
+
+        } else {
+          return {
+            message: 'Score was not saved because your position is invalid.',
+            statusCode: 400,
+            data: null,
+          };
+        }
+      } else {
+        return {
+          message: 'User not found',
+          statusCode: 404,
+          data: null,
+        };
+      }
+      updatePermissionDto.out_time = score?.id;
+      await this.permissionRepository.update(id, updatePermissionDto);
+      const perm = await this.permissionRepository.findOne({
+        where: {
+          id: id,
+        },
+      });
+      return {
+        message: 'Permission updated successfully',
+        statusCode: 201,
+        data: perm,
+      };
+    } else {
+      return {
+        message: 'Permission not found',
+        statusCode: 404,
+        data: null,
+      };
+    }
+  }
+
+  async scanIn(
+    id: string,
+    updatePermissionDto: any,
+  ): Promise<GetAllPermissionsDTO> {
+    let score: any;
+    const permission = await this.permissionRepository.findOne({
+      where: {
+        id: id,
+      },
+      relations: {
+        user: true,
+      },
+    });
+
+    const now = new Date();
+    if (permission) {
+      if (permission.user) {
+        const createScoreInput = updatePermissionDto;
+        // Condition about latitude
+        const conditionOne: boolean = 4.09 > createScoreInput.latitude;
+        const conditionTwo: boolean = 4.07 < createScoreInput.latitude;
+
+        // Condition about longitude
+        const conditionThree: boolean = 9.73 > createScoreInput.longitude;
+        const conditionFour: boolean = 9.71 < createScoreInput.longitude;
+
+        if (conditionOne && conditionTwo && conditionThree && conditionFour) {
+          // Time server error
+          const hour = now.getHours() + 1;
+
+          // Set created score and updatedAt
+          createScoreInput.createdAtDate = `${now.getFullYear()}-${
+            now.getMonth() + 1
+          }-${now.getDate()}`;
+          createScoreInput.updatedAtDate = `${now.getFullYear()}-${
+            now.getMonth() + 1
+          }-${now.getDate()}`;
+
+          createScoreInput.createdAtTime = `${hour}:${now.getMinutes()}:${now.getSeconds()}`;
+          createScoreInput.updatedAtTime = `${hour}:${now.getMinutes()}:${now.getSeconds()}`;
+
+          score = await this.scoreRepository.save(createScoreInput);
+        } else {
+          return {
+            message: 'Score was not saved because your position is invalid.',
+            statusCode: 400,
+            data: null,
+          };
+        }
+      } else {
+        return {
+          message: 'User not found',
+          statusCode: 404,
+          data: null,
+        };
+      }
+      updatePermissionDto.in_time = score?.id;
       await this.permissionRepository.update(id, updatePermissionDto);
       const perm = await this.permissionRepository.findOne({
         where: {

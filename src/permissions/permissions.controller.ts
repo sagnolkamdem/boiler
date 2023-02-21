@@ -86,6 +86,22 @@ export class PermissionsController {
     return this.permissionsService.update(id, updatePermissionDto);
   }
 
+  @Patch('scanOut/:id')
+  scanOut(
+    @Param('id') id: string,
+    @Body() updatePermissionDto: UpdatePermissionDto,
+  ) {
+    return this.permissionsService.scanOut(id, updatePermissionDto);
+  }
+
+  @Patch('scanIn/:id')
+  scanIn(
+    @Param('id') id: string,
+    @Body() updatePermissionDto: UpdatePermissionDto,
+  ) {
+    return this.permissionsService.update(id, updatePermissionDto);
+  }
+
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.permissionsService.remove(+id);
