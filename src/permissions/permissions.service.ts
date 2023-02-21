@@ -150,26 +150,23 @@ export class PermissionsService {
             data: null,
           };
         }
-
-        const permission = await this.permissionRepository.find({
+        const user = await this.userRepository.find({
           where: {
             // Check if the current user is an administrator
             // role: Role.ADMIN,
-            createdAt: Between(startDate, endDate),
+            permissions: {
+              createdAt: Between(startDate, endDate),
+            },
           },
           relations: {
-            user: true,
-            validated_by: true,
-            proofs: true,
-            scan_out: true,
-            scan_in: true,
+            permissions: true,
           },
         });
 
         return {
           message: 'Data successfully retrieved',
           statusCode: 200,
-          data: permission,
+          data: user,
         };
       }
 
@@ -225,20 +222,22 @@ export class PermissionsService {
         };
       }
 
-      const permission = await this.permissionRepository.find({
+      const user = await this.userRepository.find({
         relations: {
-          user: true,
-          validated_by: true,
-          proofs: true,
-          scan_out: true,
-          scan_in: true,
+          permissions: {
+            user: true,
+            validated_by: true,
+            proofs: true,
+            scan_out: true,
+            scan_in: true,
+          },
         },
       });
 
       return {
         message: 'Data successfully retrieved',
         statusCode: 200,
-        data: permission,
+        data: user,
       };
     } catch (error) {
       console.log(error);

@@ -6,7 +6,7 @@ import { Base } from './base.entity';
 import { PayStub } from './payStub.entity';
 import { Proof } from './proof.entity';
 import { Score } from './score.entity';
-import { Alert } from "./alert.entity";
+import { Alert } from './alert.entity';
 
 @Entity('person')
 export class User extends Base {
@@ -90,10 +90,9 @@ export class User extends Base {
   @OneToMany(() => Permission, (permission) => permission.user)
   permissions: Permission[];
 
-    @OneToMany(() => Alert, (alert) => alert.user)
-    alerts: Alert[]; 
+  @OneToMany(() => Alert, (alert) => alert.user)
+  alerts: Alert[];
 
-    @OneToMany(() => Permission, (permissions) => permissions.validated_by)
-   permissionsUpdated: Permission[];
-
+  @OneToMany(() => Permission, (permissions) => permissions.validated_by)
+  permissionsUpdated: Permission[];
 }
