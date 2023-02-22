@@ -8,7 +8,7 @@ export class UpdatePermissionDto {
   @IsOptional()
   proof_id: string;
 
-  @IsNotEmpty()
+  @IsOptional()
   motif: string;
 
   @IsOptional()
@@ -17,7 +17,7 @@ export class UpdatePermissionDto {
   @IsOptional()
   type: PermissionType;
 
-  @IsNotEmpty()
+  @IsOptional()
   duration: string;
 
   @IsOptional()
