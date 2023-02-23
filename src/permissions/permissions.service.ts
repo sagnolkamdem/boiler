@@ -159,7 +159,13 @@ export class PermissionsService {
             },
           },
           relations: {
-            permissions: true,
+            permissions: {
+              user: true,
+              validated_by: true,
+              proofs: true,
+              scan_out: true,
+              scan_in: true,
+            },
           },
         });
 
