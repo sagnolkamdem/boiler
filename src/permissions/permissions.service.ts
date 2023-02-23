@@ -113,9 +113,18 @@ export class PermissionsService {
 
     if (permission) {
       await this.permissionRepository.update(id, updatePermissionDto);
-      const perm = await this.permissionRepository.findOne({
+      const perm = await this.userRepository.findOne({
         where: {
-          id: id,
+          id: permission.user_id,
+        },
+        relations: {
+          permissions: {
+            user: true,
+            validated_by: true,
+            proofs: true,
+            scan_out: true,
+            scan_in: true,
+          },
         },
       });
       return {
