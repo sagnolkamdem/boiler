@@ -3,10 +3,9 @@ import { Public } from 'src/feature/auth/auth/public.strategy';
 
 @Controller('proofFile')
 export class GetProofFileController {
-
-    @Public()
-    @Get(":imageUrl")
-    getFile(@Param("imageUrl") imageUrl: any, @Res() res) {
-        return res.sendFile(imageUrl, { root: 'upload'});
-    }
+  @Public()
+  @Get(':imageUrl')
+  getFile(@Param('imageUrl') imageUrl: any, @Res() res) {
+    return res.sendFile(imageUrl, { root: 'upload' });
+  }
 }

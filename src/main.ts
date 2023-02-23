@@ -33,7 +33,7 @@ async function bootstrap() {
 
   // app.useStaticAssets(join(__dirname, '..', 'public'));
   app.useStaticAssets(join(__dirname, '..', 'public'), {
-    prefix: '/upload/',
+    prefix: '/upload',
   });
   app.setBaseViewsDir(join(__dirname, '..', 'views'));
   app.setViewEngine('hbs');
