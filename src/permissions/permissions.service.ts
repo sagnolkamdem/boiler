@@ -68,8 +68,118 @@ export class PermissionsService {
     }
   }
 
-  findAll() {
-    return `This action returns all permissions`;
+  async findAll(
+    userId: string,
+    startDate: Date,
+    endDate: Date,
+  ): Promise<GetAllPermissionsDTO> {
+    try {
+      if (startDate && !userId) {
+        if (!endDate) {
+          return {
+            message: 'Please select an end date',
+            statusCode: 404,
+            data: null,
+          };
+        }
+        const permission = await this.permissionRepository.find({
+          where: {
+            // Check if the current user is an administrator
+            // role: Role.ADMIN,
+            createdAt: Between(startDate, endDate),
+          },
+          relations: {
+            user: true,
+            validated_by: true,
+            proofs: true,
+            scan_out: true,
+            scan_in: true,
+          },
+        });
+
+        return {
+          message: 'Data successfully retrieved',
+          statusCode: 200,
+          data: permission,
+        };
+      }
+
+      if (userId) {
+        if (startDate) {
+          if (!endDate) {
+            return {
+              message: 'Please select an end date',
+              statusCode: 404,
+              data: null,
+            };
+          }
+
+          const permission = await this.permissionRepository.find({
+            where: {
+              user: {
+                id: userId,
+              },
+            },
+            relations: {
+              user: true,
+              validated_by: true,
+              proofs: true,
+              scan_out: true,
+              scan_in: true,
+            },
+          });
+
+          return {
+            message: 'Data successfully retrieved',
+            statusCode: 200,
+            data: permission,
+          };
+        }
+
+        const permission = await this.permissionRepository.find({
+          where: {
+            id: userId,
+          },
+          relations: {
+            user: true,
+            validated_by: true,
+            proofs: true,
+            scan_out: true,
+            scan_in: true,
+          },
+        });
+
+        return {
+          message: 'Data successfully retrieved',
+          statusCode: 200,
+          data: permission,
+        };
+      }
+
+      const permission = await this.permissionRepository.find({
+        relations: {
+          user: true,
+          validated_by: true,
+          proofs: true,
+          scan_out: true,
+          scan_in: true,
+        },
+      });
+
+      return {
+        message: 'Data successfully retrieved',
+        statusCode: 200,
+        data: permission,
+      };
+    } catch (error) {
+      console.log(error);
+
+      return {
+        message: 'An error occurred',
+        statusCode: 500,
+        data: null,
+      };
+    }
   }
 
   async findOne(id: string): Promise<GetAllPermissionsDTO> {

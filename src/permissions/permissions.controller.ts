@@ -73,6 +73,15 @@ export class PermissionsController {
     );
   }
 
+  @Get('getAll')
+  getAll(@Query() query: any) {
+    return this.permissionsService.findAll(
+      query.userId,
+      query.startDate,
+      query.endDate,
+    );
+  }
+
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.permissionsService.findOne(id);
