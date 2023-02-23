@@ -35,7 +35,7 @@ export class PermissionsService {
       if (user) {
         if (file) {
           const createProofInput = {
-            file: file.path,
+            file: file.filename,
             concerns: user,
           };
           const proof = await this.proofRepository.save(createProofInput);
