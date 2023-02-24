@@ -4,6 +4,7 @@ import { User } from 'src/entity/person.entity';
 import { Score } from 'src/entity/score.entity';
 import { ProofStatus } from 'src/enum/proofStatus.enum';
 import { ScoreStatus } from 'src/enum/scoreStatus.enum';
+import { ScoreType } from 'src/enum/scoreType.enum';
 import { Between, Equal, MoreThanOrEqual, Not, Repository } from 'typeorm';
 import { GetAllScoreOutput } from './data/get-all-score.output';
 
@@ -113,6 +114,92 @@ export class GetAllScoreService {
     } catch (error) {
       console.log(error);
 
+      return {
+        message: 'An error occurred',
+        statusCode: 500,
+        data: null,
+      };
+    }
+  }
+
+  async usersScanned(startDate: Date, endDate: Date): Promise<any> {
+    try {
+      if (startDate) {
+        if (!endDate) {
+          return {
+            message: 'Please select an end date',
+            statusCode: 404,
+            data: null,
+          };
+        }
+
+        const presence = await this.userRepository.find({
+          where: {
+            scores: {
+              createdAtOfServer: Between(startDate, endDate),
+              type: ScoreType.EVENING_SCAN,
+            },
+          },
+          relations: {
+            scores: true,
+          },
+        });
+
+        const absence = await this.userRepository.find({
+          where: {
+            scores: {
+              status: ScoreStatus.ABSENT,
+              createdAtOfServer: Between(startDate, endDate),
+              type: ScoreType.EVENING_SCAN,
+            },
+          },
+          relations: {
+            scores: true,
+          },
+        });
+
+        return {
+          message: 'Data successfully retrieved',
+          statusCode: 200,
+          data: {
+            presence,
+            absence,
+          },
+        };
+      }
+
+      const presence = await this.userRepository.find({
+        where: {
+          scores: {
+            type: ScoreType.EVENING_SCAN,
+          },
+        },
+        relations: {
+          scores: true,
+        },
+      });
+
+      const absence = await this.userRepository.find({
+        where: {
+          scores: {
+            status: ScoreStatus.ABSENT,
+            type: ScoreType.EVENING_SCAN,
+          },
+        },
+        relations: {
+          scores: true,
+        },
+      });
+
+      return {
+        message: 'Data successfully retrieved',
+        statusCode: 200,
+        data: {
+          presence,
+          absence,
+        },
+      };
+    } catch (error) {
       return {
         message: 'An error occurred',
         statusCode: 500,

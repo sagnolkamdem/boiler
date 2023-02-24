@@ -8,6 +8,9 @@ import { CreatePermissionDto } from './dto/create-permission.dto';
 import { UpdatePermissionDto } from './dto/update-permission.dto';
 import { Permission } from './entities/permission.entity';
 import { Proof } from 'src/entity/proof.entity';
+import { ScoreType } from 'src/enum/scoreType.enum';
+import { GetScoreStatisticsOutput } from 'src/feature/score/get-score-statistics/data/get-score-statistics.output';
+import { ScoreStatus } from 'src/enum/scoreStatus.enum';
 
 @Injectable()
 export class PermissionsService {
@@ -417,7 +420,6 @@ export class PermissionsService {
           createScoreInput.updatedAtTime = `${hour}:${now.getMinutes()}:${now.getSeconds()}`;
 
           score = await this.scoreRepository.save(createScoreInput);
-
         } else {
           return {
             message: 'Score was not saved because your position is invalid.',
