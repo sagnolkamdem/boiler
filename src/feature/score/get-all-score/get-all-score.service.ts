@@ -122,9 +122,9 @@ export class GetAllScoreService {
     }
   }
 
-  async usersScanned(startDate: Date, endDate: Date): Promise<any> {
+  async usersScanned(userId, startDate: Date, endDate: Date): Promise<any> {
     try {
-      if (startDate) {
+      if (startDate && !userId) {
         if (!endDate) {
           return {
             message: 'Please select an end date',
@@ -165,6 +165,70 @@ export class GetAllScoreService {
             presence,
             absence,
           },
+        };
+      }
+
+      if (userId) {
+        if (startDate) {
+          if (!endDate) {
+            return {
+              message: 'Please select an end date',
+              statusCode: 404,
+              data: null,
+            };
+          }
+
+          const presence = await this.userRepository.find({
+            where: {
+              id: userId,
+              scores: {
+                createdAtOfServer: Between(startDate, endDate),
+                type: ScoreType.EVENING_SCAN,
+              },
+            },
+            relations: {
+              scores: true,
+            },
+          });
+
+          const absence = await this.userRepository.find({
+            where: {
+              id: userId,
+              scores: {
+                status: ScoreStatus.ABSENT,
+                createdAtOfServer: Between(startDate, endDate),
+                type: ScoreType.EVENING_SCAN,
+              },
+            },
+            relations: {
+              scores: true,
+            },
+          });
+
+          return {
+            message: 'Data successfully retrieved',
+            statusCode: 200,
+            data: {
+              presence,
+              absence,
+            },
+          };
+        }
+
+        const user = await this.userRepository.find({
+          where: {
+            id: userId,
+          },
+          relations: {
+            scores: true,
+            // proofsCreatedBy: true,
+          },
+        });
+
+        return {
+          message: 'Data successfully retrieved',
+          statusCode: 200,
+          data: user,
         };
       }
 

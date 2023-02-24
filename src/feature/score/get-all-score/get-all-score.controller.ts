@@ -39,6 +39,10 @@ export class GetAllScoreController {
 
   @Get('users')
   getUsers(@Query() query: any): Promise<any> {
-    return this.getAllScoreService.usersScanned(query.startDate, query.endDate);
+    return this.getAllScoreService.usersScanned(
+      query.userId,
+      query.startDate,
+      query.endDate,
+    );
   }
 }
