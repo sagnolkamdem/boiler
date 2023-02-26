@@ -1,6 +1,3 @@
-import { Alert } from "src/entity/alert.entity";
-import { User } from "src/entity/person.entity";
-
 export const config = () => ({
     port: Number(process.env.APP_PORT), 
     database: 
