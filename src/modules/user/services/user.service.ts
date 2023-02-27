@@ -36,9 +36,18 @@ export class UserService {
         }
     }
 
+    async getUsers(): Promise<User[]> {
+        try {
+            const users = await this.userRepository.find();
+            return users;
+        } catch (error) {
+            console.log(error);
+        }
+    }
 
 
-    async validateUser(username: string, password: string): Promise<any> {
+
+    async validateUser(username: string, password: string): Promise<User | null> {
         try {
             const user = await this.userRepository.findOne({
                 where: {

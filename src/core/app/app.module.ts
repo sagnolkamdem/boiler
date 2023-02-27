@@ -9,6 +9,8 @@ import { MulterModule } from '@nestjs/platform-express';
 import { ConfigModule } from '@nestjs/config';
 import { config } from '../../../config';
 import { DatabaseConfig } from 'database.config';
+import { APP_GUARD } from '@nestjs/core';
+import { RoleGuard } from 'src/common/guards/role.guard';
 
 @Module({
   imports: [
@@ -28,6 +30,12 @@ import { DatabaseConfig } from 'database.config';
     }),
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [
+    AppService,
+    // {
+    //   provide: APP_GUARD,
+    //   useClass: RoleGuard
+    // }
+  ],
 })
 export class AppModule {}
