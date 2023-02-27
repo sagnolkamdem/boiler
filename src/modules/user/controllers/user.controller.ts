@@ -2,8 +2,11 @@
 https://docs.nestjs.com/controllers#controllers
 */
 
-import { Body, Controller, Post, Request, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Post, Request, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { Roles } from 'src/common/decorators/roles.decorator';
+import { RoleGuard } from 'src/common/guards/role.guard';
+import { Role } from 'src/core/model/enum/role.enum';
 import { LocalAuthGuard } from 'src/modules/auth/guards/local-auth.guard';
 import { AuthService } from 'src/modules/auth/services/auth.service';
 import { Public } from 'src/modules/auth/strategies/public.strategy';
@@ -55,5 +58,18 @@ export class UserController {
     @Post('login')
     async logine(@Request() request) {
         return this.authService.login(request.user);
+    }
+
+    /**
+     * Login a user
+     * @param request 
+     * @returns statusCode and message
+    */
+    @ApiTags('test')
+    @UseGuards(RoleGuard)
+    @Roles(Role.USER)
+    @Get()
+    async getUsers() {
+        return this.userService.getUsers();
     }
 }
